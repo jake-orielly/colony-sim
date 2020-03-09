@@ -1,31 +1,32 @@
 const attributesMaster = ["name","strength","dexterity","constitution","intelligence","wisdom","charisma"];
-let creatures = [];
-function Creature(attributes){ 
-    this.name = attributes.name;
-    this.strength = attributes.strength;
-    this.dexterity = attributes.dexterity;
-    this.constitution = attributes.constitution;
-    this.intelligence = attributes.intelligence;
-    this.wisdom = attributes.wisdom;
-    this.charisma = attributes.charisma;
+let colonists = [];
+class Creature { 
+    constructor(attributes) {
+        this.name = attributes.name;
+        this.strength = attributes.strength;
+        this.dexterity = attributes.dexterity;
+        this.constitution = attributes.constitution;
+        this.intelligence = attributes.intelligence;
+        this.wisdom = attributes.wisdom;
+        this.charisma = attributes.charisma;
+        this.hp = this.maxHP();
+    }
 
-    this.maxHP = function() {
+    maxHP() {
         return this.constitution * 4;
     }
 
-    this.hp = this.maxHP();
-
-    this.takeDamage = function(damage) {
+    takeDamage(damage) {
         this.hp -= damage;
         if (this.hp <= 0)
             this.die();
     }
 
-    this.die = function() {
+    die() {
         console.log(this.name + ' is dead.')
     }
 
-    this.attack = function(target) {
+    attack(target) {
         target.takeDamage(this.strength);
     }
  } 
