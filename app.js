@@ -13,8 +13,16 @@ function mineIron() {
     new IronOre().addToInventory();
 }
 
+function mineCoal() {
+    new Coal().addToInventory();
+}
+
 function smeltIron() {
     new IronIngot().smelt();
+}
+
+function smeltSteel() {
+    new SteelIngot().smelt();
 }
 
 function renderInventory() {

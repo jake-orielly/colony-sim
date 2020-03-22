@@ -53,6 +53,12 @@ class IronOre extends Ore {
     }
 }
 
+class Coal extends Ore {
+    constructor() {
+        super({name:'coal', value:7})
+    }
+}
+
 // --- Ingots ---
 
 class Ingot extends Item {
@@ -77,5 +83,11 @@ class Ingot extends Item {
 class IronIngot extends Ingot {
     constructor() {
         super({name:'iron_ingot', value:15, recipe:[{item: new IronOre,amount:2}]})
+    }
+}
+
+class SteelIngot extends Ingot {
+    constructor() {
+        super({name:'steel_ingot', value:15, recipe:[{item: new IronOre,amount:2,item: new Coal,amount:2}]})
     }
 }
