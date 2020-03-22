@@ -33,4 +33,36 @@ class Creature {
     attack(target) {
         target.takeDamage(this.strength);
     }
+
+    getAC() {
+        let total = 0;
+        for (let i of this.equipment)
+            if (i instanceof Armor)
+                total += i.armorBonus;
+        return total;
+    }
+}
+
+class Knight extends Creature {
+    constructor() {
+        super({
+            name:'Knight',
+            strength: 16,
+            dexterity: 11,
+            constitution: 14,
+            intellegence: 11,
+            wisdom: 11,
+            charisma: 15,
+            hp: 52,
+            equipment: [
+                new Greatsword(),
+                new HeavyCrossbow(),
+                new Breastplate(),
+                new Platelegs(),
+                new Greathelm(),
+                new Gauntlets(),
+                new Boots()
+            ]
+        })
+    }
 }
