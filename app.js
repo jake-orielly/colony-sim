@@ -19,9 +19,11 @@ function renderInventory() {
     invTable.empty();
 
     for (let i of inventory) {
-        invTable.append('<tr></tr>')
-        currRow = invTable.find('tr:last');
-        currRow.append('<td>' + i.item.name + ':</td>')
-        currRow.append('<td>' + i.amount + '</td>')
+        if (i != undefined) {
+            invTable.append('<tr></tr>')
+            currRow = invTable.find('tr:last');
+            currRow.append('<td>' + i.item.name + ':</td>')
+            currRow.append('<td>' + i.amount + '</td>')
+        }
     }
 }

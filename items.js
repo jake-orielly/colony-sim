@@ -14,6 +14,24 @@ class Item {
         inventory.push({item:this,amount:amount})
         renderInventory();
     }
+
+    removeFromInventory(amount = 1) {
+        for (let i in inventory)
+            if (inventory[i].item.name == this.name) {
+                inventory[i].amount -= amount
+                if (inventory[i].amount == 0)
+                    delete inventory[i];
+            }
+        renderInventory();
+    }
+
+    haveAmount(amount = 1) {
+        for (let i of inventory)
+            if (i.item.name == this.name) {
+                return item.amount >= amount
+            }
+        return false;
+    }
 }
 
 // --- Produce ---
