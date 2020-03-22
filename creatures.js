@@ -27,7 +27,7 @@ class Creature {
     }
 
     die() {
-        console.log(this.name + ' is dead.')
+        console.log(prettyPrint(this.name) + ' is dead.')
     }
 
     attack(target) {
@@ -46,7 +46,7 @@ class Creature {
 class Bandit extends Creature {
     constructor() {
         super({
-            name:'Bandi',
+            name:'bandit',
             strength: 11,
             dexterity: 12,
             constitution: 12,
@@ -66,7 +66,7 @@ class Bandit extends Creature {
 class Knight extends Creature {
     constructor() {
         super({
-            name:'Knight',
+            name:'knight',
             strength: 16,
             dexterity: 11,
             constitution: 14,

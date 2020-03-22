@@ -5,32 +5,23 @@ class Item {
     }
 
     addToInventory(amount = 1) {
-        console.log(inventory)
-        for (let i of inventory)
-            if (i.item.name == this.name) {
-                i.amount += amount
-                renderInventory();
-                return
-            }
-        inventory.push({item:this,amount:amount})
+        if (inventory[this.name])
+            inventory[this.name].amount += amount;
+        else
+            inventory[this.name] = {item:this,amount:amount};
         renderInventory();
     }
 
     removeFromInventory(amount = 1) {
-        for (let i in inventory)
-            if (inventory[i].item.name == this.name) {
-                inventory[i].amount -= amount
-                if (inventory[i].amount == 0)
-                    delete inventory[i];
-            }
+        inventory[this.name].amount -= amount
+        if (inventory[this.name].amount == 0)
+                delete inventory[this.name];
         renderInventory();
     }
 
     haveAmount(amount = 1) {
-        for (let i of inventory)
-            if (i.item.name == this.name) {
-                return i.amount >= amount
-            }
+        if (inventory[this.name])
+            return inventory[this.name].amount > amount;
         return false;
     }
 }
@@ -44,7 +35,7 @@ class Produce extends Item {
 
 class Berry extends Produce {
     constructor() {
-        super({name:'Berry',value:3})
+        super({name:'berry',value:3})
     }
 }
 
@@ -58,7 +49,7 @@ class Ore extends Item {
 
 class IronOre extends Ore {
     constructor() {
-        super({name:'Iron Ore', value:5})
+        super({name:'iron_ore', value:5})
     }
 }
 
@@ -72,7 +63,6 @@ class Ingot extends Item {
 
     smelt() {
         for (let i of this.recipe) {
-            console.log(i.item.haveAmount(i.amount),i.item,i.amount)
             if (i.item.haveAmount(i.amount)) {
                 i.item.removeFromInventory(i.amount);
                 this.addToInventory(1);
@@ -86,6 +76,6 @@ class Ingot extends Item {
 
 class IronIngot extends Ingot {
     constructor() {
-        super({name:'Iron Ingot', value:15, recipe:[{item: new IronOre,amount:2}]})
+        super({name:'iron_ingot', value:15, recipe:[{item: new IronOre,amount:2}]})
     }
 }

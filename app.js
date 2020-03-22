@@ -1,4 +1,4 @@
-let inventory = [];
+let inventory = {};
 
 function start() {
     let knight = new Knight();
@@ -22,12 +22,10 @@ function renderInventory() {
     let currRow;
     invTable.empty();
 
-    for (let i of inventory) {
-        if (i != undefined) {
-            invTable.append('<tr></tr>')
-            currRow = invTable.find('tr:last');
-            currRow.append('<td>' + i.item.name + ':</td>')
-            currRow.append('<td>' + i.amount + '</td>')
-        }
+    for (let i in inventory) {
+        invTable.append('<tr></tr>')
+        currRow = invTable.find('tr:last');
+        currRow.append('<td>' + prettyPrint(inventory[i].item.name) + ':</td>')
+        currRow.append('<td>' + inventory[i].amount + '</td>')
     }
 }
