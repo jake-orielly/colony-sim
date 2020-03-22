@@ -1,6 +1,8 @@
 let colonists = [];
-var bob;
 function start() {
-    bob = new Knight();
-    console.log(bob)
+    let knight = new Knight();
+    let bandit = new Bandit();
+    console.log(bandit.hp)
+    knight.attack(bandit);
+    console.log(bandit.hp)
 }

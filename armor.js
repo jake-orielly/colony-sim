@@ -5,6 +5,12 @@ class Armor extends Item {
     }
 }
 
+class LeatherJerkin extends Armor {
+    constructor() {
+        super({name:'Leather Jerkin',armorBonus:5,value:10})
+    }
+}
+
 class Breastplate extends Armor {
     constructor() {
         super({name:'Breastplate',armorBonus:7,value:10})

@@ -43,6 +43,26 @@ class Creature {
     }
 }
 
+class Bandit extends Creature {
+    constructor() {
+        super({
+            name:'Bandi',
+            strength: 11,
+            dexterity: 12,
+            constitution: 12,
+            intellegence: 10,
+            wisdom: 10,
+            charisma: 10,
+            equipment: [
+                new Shortsword(),
+                new Shortbow(),
+                new LeatherJerkin(),
+                new Boots()
+            ]
+        })
+    }
+}
+
 class Knight extends Creature {
     constructor() {
         super({
@@ -53,7 +73,6 @@ class Knight extends Creature {
             intellegence: 11,
             wisdom: 11,
             charisma: 15,
-            hp: 52,
             equipment: [
                 new Greatsword(),
                 new HeavyCrossbow(),

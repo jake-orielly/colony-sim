@@ -26,6 +26,12 @@ class Greatsword extends Weapon {
     }
 }
 
+class Shortbow extends Weapon {
+    constructor() {
+        super({name:'Shortbow',damage:[1,6],damageType:'piercing',range:15,value:10})
+    }
+}
+
 class HeavyCrossbow extends Weapon {
     constructor() {
         super({name:'Heavy Crossbow',damage:[1,10],damageType:'piercing',range:20,value:10})
