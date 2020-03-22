@@ -1,8 +1,10 @@
-let colonists = [];
+let inventory = [];
+
 function start() {
     let knight = new Knight();
     let bandit = new Bandit();
-    console.log(bandit.hp)
-    knight.attack(bandit);
-    console.log(bandit.hp)
+}
+
+function gatherBerry() {
+    new Berry().addToInventory();
 }
