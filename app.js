@@ -9,6 +9,10 @@ function gatherBerry() {
     new Berry().addToInventory();
 }
 
+function mineIron() {
+    new IronOre().addToInventory();
+}
+
 function renderInventory() {
     let invTable = $('#inventory-table tbody');
     let currRow;

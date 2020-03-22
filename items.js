@@ -16,6 +16,7 @@ class Item {
     }
 }
 
+// --- Produce ---
 class Produce extends Item {
     constructor(attributes) {
         super(attributes)
@@ -25,5 +26,19 @@ class Produce extends Item {
 class Berry extends Produce {
     constructor() {
         super({name:'Berry',value:3})
+    }
+}
+
+// --- Ore ---
+
+class Ore extends Item {
+    constructor(attributes) {
+        super(attributes)
+    }
+}
+
+class IronOre extends Ore {
+    constructor() {
+        super({name:'Iron Ore', value:5})
     }
 }
