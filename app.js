@@ -13,6 +13,10 @@ function mineIron() {
     new IronOre().addToInventory();
 }
 
+function smeltIron() {
+    new IronIngot().smelt();
+}
+
 function renderInventory() {
     let invTable = $('#inventory-table tbody');
     let currRow;

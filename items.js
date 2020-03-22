@@ -5,6 +5,7 @@ class Item {
     }
 
     addToInventory(amount = 1) {
+        console.log(inventory)
         for (let i of inventory)
             if (i.item.name == this.name) {
                 i.amount += amount
@@ -28,7 +29,7 @@ class Item {
     haveAmount(amount = 1) {
         for (let i of inventory)
             if (i.item.name == this.name) {
-                return item.amount >= amount
+                return i.amount >= amount
             }
         return false;
     }
@@ -58,5 +59,33 @@ class Ore extends Item {
 class IronOre extends Ore {
     constructor() {
         super({name:'Iron Ore', value:5})
+    }
+}
+
+// --- Ingots ---
+
+class Ingot extends Item {
+    constructor(attributes) {
+        super(attributes)
+        this.recipe = attributes.recipe;
+    }
+
+    smelt() {
+        for (let i of this.recipe) {
+            console.log(i.item.haveAmount(i.amount),i.item,i.amount)
+            if (i.item.haveAmount(i.amount)) {
+                i.item.removeFromInventory(i.amount);
+                this.addToInventory(1);
+            }
+            else 
+                return false;
+        }
+        return true;
+    }
+}
+
+class IronIngot extends Ingot {
+    constructor() {
+        super({name:'Iron Ingot', value:15, recipe:[{item: new IronOre,amount:2}]})
     }
 }
