@@ -1,3 +1,8 @@
-.attribute-input {
-    width: 3em;
+.no-select {
+    user-select: none;
+}
+
+.clickable {
+    cursor:pointer;
+    user-select: none;
 }

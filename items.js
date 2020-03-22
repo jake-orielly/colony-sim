@@ -8,9 +8,11 @@ class Item {
         for (let i of inventory)
             if (i.item.name == this.name) {
                 i.amount += amount
+                renderInventory();
                 return
             }
         inventory.push({item:this,amount:amount})
+        renderInventory();
     }
 }
 
