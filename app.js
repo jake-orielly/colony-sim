@@ -5,12 +5,16 @@ function start() {
     let bandit = new Bandit();
 }
 
+let skills = {};
+skills.mining = new Skill({name:'mining'});
+
 function gatherBerry() {
     new Berry().addToInventory();
 }
 
 function mineIron() {
     new IronOre().addToInventory();
+    skills.mining.gainXP(16);
 }
 
 function mineCoal() {
