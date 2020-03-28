@@ -2,6 +2,8 @@ class Item {
     constructor(attributes) {
         this.name = attributes.name;
         this.value = attributes.value;
+        this.skill = attributes.skill;
+        this.xp = attributes.xp;
     }
 
     addToInventory(amount = 1) {
@@ -9,6 +11,8 @@ class Item {
             inventory[this.name].amount += amount;
         else
             inventory[this.name] = {item:this,amount:amount};
+
+        skills[this.skill].gainXP(this.xp);
         renderInventory();
     }
 
@@ -49,13 +53,13 @@ class Ore extends Item {
 
 class IronOre extends Ore {
     constructor() {
-        super({name:'iron_ore', value:5})
+        super({name:'iron_ore', value:5,skill:'mining',xp:16})
     }
 }
 
 class Coal extends Ore {
     constructor() {
-        super({name:'coal', value:7})
+        super({name:'coal', value:7,skill:'mining',xp:25})
     }
 }
 
