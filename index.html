@@ -12,14 +12,19 @@
     <script src="jquery-3.4.1.min.js"></script>
 </head>
     <body onload = "start()">
-        <table class="no-select" id="inventory-table">
-            <tbody></tbody>
-        </table>
-        <button onclick="gatherBerry()" class="clickable">Gather Berries</button>
-        <button onclick="mineIron()" class="clickable">Mine Iron</button>
-        <button onclick="mineCoal()" class="clickable">Mine Coal</button>
-        <button onclick="smeltIron()" class="clickable">Smelt Iron</button>
-        <button onclick="smeltSteel()" class="clickable">Smelt Steel</button>
+        <div id="toolbar"></div>
+        <div id="inventory-table-container">
+            <table class="no-select" id="inventory-table">
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="action-container">
+            <button onclick="gatherBerry()" class="clickable">Gather Berries</button>
+            <button onclick="mineIron()" class="clickable">Mine Iron</button>
+            <button onclick="mineCoal()" class="clickable">Mine Coal</button>
+            <button onclick="smeltIron()" class="clickable">Smelt Iron</button>
+            <button onclick="smeltSteel()" class="clickable">Smelt Steel</button>
+        </div>
         <script type="text/javascript" src="app.js"></script>
     </body>
 </html>

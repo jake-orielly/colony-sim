@@ -6,3 +6,12 @@ body, .no-select {
     cursor:pointer;
     user-select: none;
 }
+
+#inventory-table-container {
+    width: 10%;
+    float: left;
+}
+
+#toolbar {
+    height: 3em;
+}
