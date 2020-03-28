@@ -2,6 +2,14 @@ body, .no-select {
     user-select: none;
 }
 
+ul {
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
 .clickable {
     cursor:pointer;
     user-select: none;
@@ -12,6 +20,30 @@ body, .no-select {
     float: left;
 }
 
+#action-container {
+    width: 30%;
+    float: left;
+}
+
+#skills-container {
+    width: 30%;
+    float: left;
+}
+
 #toolbar {
     height: 3em;
+}
+
+.skill-outer, .skill-inner {
+    height: 1.5em;
+}
+
+.skill-outer {
+    background-color: grey;
+    width: 10em;
+}
+
+.skill-inner {
+    background-color: green;
+    width: 0em;
 }
