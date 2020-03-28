@@ -75,16 +75,8 @@ class Ingot extends Item {
         this.recipe = attributes.recipe;
     }
 
-    smelt() {
-        for (let i of this.recipe) {
-            if (i.item.haveAmount(i.amount)) {
-                i.item.removeFromInventory(i.amount);
-                this.create();
-            }
-            else 
-                return false;
-        }
-        return true;
+    craft() {
+        genericCraft(this);
     }
 }
 
@@ -98,4 +90,16 @@ class SteelIngot extends Ingot {
     constructor() {
         super({name:'steel_ingot', value:15, recipe:[{item: new IronOre,amount:2,item: new Coal,amount:2}],skill:'smithing',xp:70})
     }
+}
+
+function genericCraft(item) {
+    for (let i of item.recipe) {
+        if (i.item.haveAmount(i.amount)) {
+            i.item.removeFromInventory(i.amount);
+            item.create();
+        }
+        else 
+            return false;
+    }
+    return true;
 }
