@@ -90,12 +90,12 @@ class Ingot extends Item {
 
 class IronIngot extends Ingot {
     constructor() {
-        super({name:'iron_ingot', value:15, recipe:[{item: new IronOre,amount:2}]})
+        super({name:'iron_ingot', value:15, recipe:[{item: new IronOre,amount:2}],skill:'smithing',xp:35})
     }
 }
 
 class SteelIngot extends Ingot {
     constructor() {
-        super({name:'steel_ingot', value:15, recipe:[{item: new IronOre,amount:2,item: new Coal,amount:2}]})
+        super({name:'steel_ingot', value:15, recipe:[{item: new IronOre,amount:2,item: new Coal,amount:2}],skill:'smithing',xp:70})
     }
 }
