@@ -1,9 +1,9 @@
 let inventory = {};
 
 let skills = {};
+skills.foraging = new Skill({name:'foraging'});
 skills.mining = new Skill({name:'mining'});
 skills.smithing = new Skill({name:'smithing'});
-
 
 function start() {
     let knight = new Knight();

@@ -43,7 +43,7 @@ class Produce extends Item {
 
 class Berry extends Produce {
     constructor() {
-        super({name:'berry',value:3})
+        super({name:'berry',value:3,skill:'foraging',xp:6})
     }
 }
 
@@ -75,7 +75,7 @@ class Ingot extends Item {
         this.recipe = attributes.recipe;
     }
 
-    craft() {
+    smelt() {
         genericCraft(this);
     }
 }
