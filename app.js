@@ -9,15 +9,15 @@ let skills = {};
 skills.mining = new Skill({name:'mining'});
 
 function gatherBerry() {
-    new Berry().addToInventory();
+    new Berry().create();
 }
 
 function mineIron() {
-    new IronOre().addToInventory();
+    new IronOre().create();
 }
 
 function mineCoal() {
-    new Coal().addToInventory();
+    new Coal().create();
 }
 
 function smeltIron() {

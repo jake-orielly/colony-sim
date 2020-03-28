@@ -6,13 +6,17 @@ class Item {
         this.xp = attributes.xp;
     }
 
+    create() {
+        this.addToInventory(1);
+        skills[this.skill].gainXP(this.xp);
+    }
+
     addToInventory(amount = 1) {
         if (inventory[this.name])
             inventory[this.name].amount += amount;
         else
             inventory[this.name] = {item:this,amount:amount};
 
-        skills[this.skill].gainXP(this.xp);
         renderInventory();
     }
 
@@ -75,7 +79,7 @@ class Ingot extends Item {
         for (let i of this.recipe) {
             if (i.item.haveAmount(i.amount)) {
                 i.item.removeFromInventory(i.amount);
-                this.addToInventory(1);
+                this.create();
             }
             else 
                 return false;
