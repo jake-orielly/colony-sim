@@ -15,6 +15,10 @@ function gatherBerry() {
     new Berry().create();
 }
 
+function gatherMushroom() {
+    new Mushroom().create();
+}
+
 function mineIron() {
     new IronOre().create();
 }

@@ -47,6 +47,12 @@ class Berry extends Produce {
     }
 }
 
+class Mushroom extends Produce {
+    constructor() {
+        super({name:'mushroom',value:6,skill:'foraging',xp:15})
+    }
+}
+
 // --- Ore ---
 
 class Ore extends Item {
