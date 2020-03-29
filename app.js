@@ -1,34 +1,17 @@
 let inventory = {};
 
-let skills = {};
-skills.foraging = new Skill({name:'foraging'});
-skills.mining = new Skill({name:'mining'});
-skills.smithing = new Skill({name:'smithing'});
-
 function start() {
     let knight = new Knight();
     let bandit = new Bandit();
     renderSkillsList();
 }
 
-function gatherBerry() {
-    new Berry().create();
+function gather(Item) {
+    new Item().create();
 }
 
-function gatherMushroom() {
-    new Mushroom().create();
-}
-
-function mineIron() {
-    new IronOre().create();
-}
-
-function mineCoal() {
-    new Coal().create();
-}
-
-function craft(item) {
-    new item().craft();
+function craft(Item) {
+    new Item().craft();
 }
 
 function renderInventory() {

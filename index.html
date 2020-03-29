@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="style.css">
     <script src="./utility_functions.js"></script>
     <script src="./items.js"></script>
+    <script src="./woodcutting.js"></script>
     <script src="./skills.js"></script>
     <script src="./armor.js"></script>
     <script src="./weapons.js"></script>
@@ -20,11 +21,14 @@
             </table>
         </div>
         <div id="action-container">
-            <button onclick="gatherBerry()" class="clickable">Gather Berries</button>
-            <button onclick="gatherMushroom()" class="clickable">Gather Mushrooms</button>
+            <button onclick="gather(Berry)" class="clickable">Gather Berries</button>
+            <button onclick="gather(Mushroom)" class="clickable">Gather Mushrooms</button>
             <br>
-            <button onclick="mineIron()" class="clickable">Mine Iron</button>
-            <button onclick="mineCoal()" class="clickable">Mine Coal</button>
+            <button onclick="gather(PineLog)" class="clickable">Chop Pine</button>
+            <button onclick="gather(OakLog)" class="clickable">Chop Oak</button>
+            <br>
+            <button onclick="gather(IronOre)" class="clickable">Mine Iron</button>
+            <button onclick="gather(Coal)" class="clickable">Mine Coal</button>
             <br>
             <button onclick="craft(IronIngot)" class="clickable">Smelt Iron</button>
             <button onclick="craft(SteelIngot)" class="clickable">Smelt Steel</button>

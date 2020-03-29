@@ -31,3 +31,9 @@ class Skill {
         this.level++;
     }
 }
+
+let skills = {};
+skills.foraging = new Skill({name:'foraging'});
+skills.mining = new Skill({name:'mining'});
+skills.smithing = new Skill({name:'smithing'});
+skills.woodcutting = new Skill({name:'woodcutting'});
