@@ -105,13 +105,19 @@ class SteelIngot extends Ingot {
 }
 
 function genericCraft(item) {
-    for (let i of item.recipe) {
-        if (i.item.haveAmount(i.amount)) {
-            i.item.removeFromInventory(i.amount);
-            item.create();
-        }
-        else 
-            return false;
+    if (canAfford(item.recipe)) {
+        for (let i of item.recipe)
+                i.item.removeFromInventory(i.amount);
+        item.create();
+        return true;
     }
+    else
+        return false;
+}
+
+function canAfford(recipe) {
+    for (let i of recipe)
+        if (!i.item.haveAmount(i.amount))
+            return false;
     return true;
 }
