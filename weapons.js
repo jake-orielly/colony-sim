@@ -5,6 +5,10 @@ class Weapon extends Item {
         this.damageType = attributes.damageType;
         this.range = attributes.range;
     }
+
+    craft() {
+        genericCraft(this);
+    }
 }
 
 class Shortsword extends Weapon {
@@ -16,17 +20,5 @@ class Shortsword extends Weapon {
 class Greatsword extends Weapon {
     constructor() {
         super({name:'greatsword',damage:[2,12],damageType:'slashing',range:1,value:10})
-    }
-}
-
-class Shortbow extends Weapon {
-    constructor() {
-        super({name:'shortbow',damage:[1,6],damageType:'piercing',range:15,value:10})
-    }
-}
-
-class HeavyCrossbow extends Weapon {
-    constructor() {
-        super({name:'heavy_crossbow',damage:[1,10],damageType:'piercing',range:20,value:10})
     }
 }

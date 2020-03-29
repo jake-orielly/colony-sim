@@ -11,6 +11,8 @@ function gather(Item) {
 }
 
 function craft(Item) {
+    console.log(new Item)
+    console.log(new Item().craft)
     new Item().craft();
 }
 
@@ -29,7 +31,6 @@ function renderInventory() {
 
 function renderSkillsList() {
     for (let i in skills ) {
-        console.log(i)
         $('#skills-list').append('<li id="' + i + '-skill"></li>');
         $('#skills-list li:last').append('<div>' + prettyPrint(i) + ':' + '</div>');
         $('#skills-list div:last').append('<span class="level-text">1</span>');

@@ -7,7 +7,6 @@ class Skill {
 
     gainXP(amount) {
         this.xp += amount;
-        console.log(this.xp,this.xpToLevel(this.level),this.xp >= this.xpToLevel(this.level))
         if (this.xp >= this.xpToLevel(this.level))
             this.levelUp();
         this.renderSkill();
@@ -37,3 +36,4 @@ skills.foraging = new Skill({name:'foraging'});
 skills.mining = new Skill({name:'mining'});
 skills.smithing = new Skill({name:'smithing'});
 skills.woodcutting = new Skill({name:'woodcutting'});
+skills.fletching = new Skill({name:'fletching'});

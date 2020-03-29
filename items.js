@@ -53,6 +53,12 @@ class Mushroom extends Produce {
     }
 }
 
+class Flax extends Produce {
+    constructor() {
+        super({name:'flax',value:8,skill:'foraging',xp:20})
+    }
+}
+
 // --- Ore ---
 
 class Ore extends Item {
