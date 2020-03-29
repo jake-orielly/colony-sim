@@ -29,7 +29,7 @@ class Item {
 
     haveAmount(amount = 1) {
         if (inventory[this.name])
-            return inventory[this.name].amount > amount;
+            return inventory[this.name].amount >= amount;
         return false;
     }
 }
@@ -81,7 +81,7 @@ class Ingot extends Item {
         this.recipe = attributes.recipe;
     }
 
-    smelt() {
+    craft() {
         genericCraft(this);
     }
 }

@@ -27,12 +27,8 @@ function mineCoal() {
     new Coal().create();
 }
 
-function smeltIron() {
-    new IronIngot().smelt();
-}
-
-function smeltSteel() {
-    new SteelIngot().smelt();
+function craft(item) {
+    new item().craft();
 }
 
 function renderInventory() {
