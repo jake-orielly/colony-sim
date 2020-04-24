@@ -4,6 +4,7 @@ class Item {
         this.value = attributes.value;
         this.skill = attributes.skill;
         this.xp = attributes.xp;
+        this.craft = craft;
     }
 
     create() {
@@ -86,10 +87,6 @@ class Ingot extends Item {
         super(attributes)
         this.recipe = attributes.recipe;
     }
-
-    craft() {
-        genericCraft(this);
-    }
 }
 
 class IronIngot extends Ingot {
@@ -104,11 +101,11 @@ class SteelIngot extends Ingot {
     }
 }
 
-function genericCraft(item) {
-    if (canAfford(item.recipe)) {
-        for (let i of item.recipe)
+function craft() {
+    if (canAfford(this.recipe)) {
+        for (let i of this.recipe)
                 i.item.removeFromInventory(i.amount);
-        item.create();
+                this.create();
         return true;
     }
     else

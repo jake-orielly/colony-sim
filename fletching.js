@@ -5,10 +5,6 @@ class BowString extends Item {
         this.recipe = attributes.recipe;
         this.skill = 'fletching'
     }
-
-    craft() {
-        genericCraft(this);
-    }
 }
 
 class FlaxBowString extends BowString {
@@ -23,10 +19,6 @@ class BowStave extends Item {
         super(attributes)
         this.recipe = attributes.recipe;
         this.skill = 'fletching'
-    }
-
-    craft() {
-        genericCraft(this);
     }
 }
 

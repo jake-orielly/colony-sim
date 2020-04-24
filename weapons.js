@@ -5,10 +5,6 @@ class Weapon extends Item {
         this.damageType = attributes.damageType;
         this.range = attributes.range;
     }
-
-    craft() {
-        genericCraft(this);
-    }
 }
 
 class Shortsword extends Weapon {

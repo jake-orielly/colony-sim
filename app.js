@@ -10,7 +10,7 @@ function gather(Item) {
     new Item().create();
 }
 
-function craft(Item) {
+function craftItem(Item) {
     console.log(new Item)
     console.log(new Item().craft)
     new Item().craft();

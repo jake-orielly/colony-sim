@@ -16,38 +16,43 @@
     <script src="jquery-3.4.1.min.js"></script>
 </head>
     <body onload = "start()">
-        <div id="toolbar"></div>
+        <div id="toolbar">
+            <p class="clickable">Home</p>
+            <p class="clickable">Shop</p>
+        </div>
         <div id="inventory-table-container">
             <table class="no-select" id="inventory-table">
                 <tbody></tbody>
             </table>
         </div>
-        <div id="action-container">
-            <button onclick="gather(Berry)" class="clickable">Gather Berries</button>
-            <button onclick="gather(Mushroom)" class="clickable">Gather Mushrooms</button>
-            <button onclick="gather(Flax)" class="clickable">Gather Flax</button>
-            <br>
-            <button onclick="gather(PineLog)" class="clickable">Chop Pine</button>
-            <button onclick="gather(OakLog)" class="clickable">Chop Oak</button>
-            <br>
-            <button onclick="craft(FlaxBowString)" class="clickable">Weave Bowstring</button>
-            <button onclick="craft(OakBowStave)" class="clickable">Carve Bow Stave</button>
-            <button onclick="craft(Shortbow)" class="clickable">String Shortbow</button>
-            <br>
-            <button onclick="gather(IronOre)" class="clickable">Mine Iron</button>
-            <button onclick="gather(Coal)" class="clickable">Mine Coal</button>
-            <br>
-            <button onclick="craft(IronIngot)" class="clickable">Smelt Iron</button>
-            <button onclick="craft(SteelIngot)" class="clickable">Smelt Steel</button>
-            <br>
-            <button onclick="craft(Breastplate)" class="clickable">Smith Breastplate</button>
-            <button onclick="craft(Platelegs)" class="clickable">Smith Platelegs</button>
-            <button onclick="craft(Greathelm)" class="clickable">Smith Greathelm</button>
-            <button onclick="craft(Gauntlets)" class="clickable">Smith Gauntlets</button>
-        </div>
-        <div id="skills-container">
-            <ul id="skills-list">
-            </ul>
+        <div id="home-container">
+            <div id="action-container">
+                <button onclick="gather(Berry)" class="clickable">Gather Berries</button>
+                <button onclick="gather(Mushroom)" class="clickable">Gather Mushrooms</button>
+                <button onclick="gather(Flax)" class="clickable">Gather Flax</button>
+                <br>
+                <button onclick="gather(PineLog)" class="clickable">Chop Pine</button>
+                <button onclick="gather(OakLog)" class="clickable">Chop Oak</button>
+                <br>
+                <button onclick="craftItem(FlaxBowString)" class="clickable">Weave Bowstring</button>
+                <button onclick="craftItem(OakBowStave)" class="clickable">Carve Bow Stave</button>
+                <button onclick="craftItem(Shortbow)" class="clickable">String Shortbow</button>
+                <br>
+                <button onclick="gather(IronOre)" class="clickable">Mine Iron</button>
+                <button onclick="gather(Coal)" class="clickable">Mine Coal</button>
+                <br>
+                <button onclick="craftItem(IronIngot)" class="clickable">Smelt Iron</button>
+                <button onclick="craftItem(SteelIngot)" class="clickable">Smelt Steel</button>
+                <br>
+                <button onclick="craftItem(Breastplate)" class="clickable">Smith Breastplate</button>
+                <button onclick="craftItem(Platelegs)" class="clickable">Smith Platelegs</button>
+                <button onclick="craftItem(Greathelm)" class="clickable">Smith Greathelm</button>
+                <button onclick="craftItem(Gauntlets)" class="clickable">Smith Gauntlets</button>
+            </div>
+            <div id="skills-container">
+                <ul id="skills-list">
+                </ul>
+            </div>
         </div>
         <script type="text/javascript" src="app.js"></script>
     </body>

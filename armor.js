@@ -5,10 +5,6 @@ class Armor extends Item {
         this.recipe = attributes.recipe;
         this.skill = 'smithing'
     }
-
-    craft() {
-        genericCraft(this);
-    }
 }
 
 class LeatherJerkin extends Armor {
