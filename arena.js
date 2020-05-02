@@ -1,39 +1,32 @@
 let rows = 7;
 let cols = 7;
 let creatures = [];
+let arenaBoard = [];
 let blankToken = ".";
 function start() {
-    for (let i = 0; i < cols; i++) {
+    for (let y = 0; y < cols; y++) {
+        arenaBoard[y] = [];
         $("#arena-board").append("<tr></tr>")
-        for (let j = 0; j < cols; j++) {
-            $("#arena-board tr:last").append('<td id="cell-' + i + '-' + j + '">' + blankToken + '</td>')
+        for (let x = 0; x < cols; x++) {
+            arenaBoard[y][x] = blankToken;
+            $("#arena-board tr:last").append('<td id="cell-' + x + '-' + y + '">' + blankToken + '</td>')
         }
     }
 
-    let newBandit = new Bandit();
-    newBandit.x = 2;
-    newBandit.y = 2;
-    newBandit.token = "#";
-    newBandit.direction = [0,1]
-    newBandit.move = function() {
-        if (onBoard(this.x + newBandit.direction[1], this.y + newBandit.direction[0])) {
-            placeToken(this.x,this.y,blankToken)
-            this.y += newBandit.direction[0];
-            this.x += newBandit.direction[1];
-            placeToken(this.x,this.y,this.token)
-        }
-        else {
-            this.direction[1] = this.direction[1] * -1;
-        }
-    }
+    placeToken(3,3,"B")
 
+    creatures.push(new Bandit());
+    creatures.push(new Bandit());
+    creatures[1].x -= 2;
 
     gameTick = setInterval(() => {
-        newBandit.move();
+        for (let i of creatures)
+            i.move();
     },100)
 }
 
 function placeToken(x,y,token) {
+    arenaBoard[y][x] = token;
     $("#cell-" + x + "-" + y).html(token);
 }
 

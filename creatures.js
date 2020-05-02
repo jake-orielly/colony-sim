@@ -10,6 +10,10 @@ class Creature {
         this.wisdom = attributes.wisdom;
         this.charisma = attributes.charisma;
         this.hp = this.maxHP();
+        this.x = 2;
+        this.y = 2;
+        this.direction = [0,1]
+        this.token = "#";
         if (attributes.equipment)
             this.equipment = attributes.equipment;
         else
@@ -40,6 +44,22 @@ class Creature {
             if (i instanceof Armor)
                 total += i.armorBonus;
         return total;
+    }
+
+    move() {
+        let newX = this.x + this.direction[1];
+        let newY = this.y + this.direction[0];
+        if (onBoard(newX, newY) && arenaBoard[newY][newX] == blankToken) {
+            placeToken(this.x,this.y,blankToken)
+            this.y += this.direction[0];
+            this.x += this.direction[1];
+            placeToken(this.x,this.y,this.token)
+        }
+        else {
+            this.direction[1] = 0;
+            this.direction[0] = 0;
+            this.direction[parseInt(Math.random() * 2)] = (parseInt(Math.random() * 2) ? 1  : -1);
+        }
     }
 }
 
