@@ -86,7 +86,7 @@ class Creature {
             for (let i of cardinalDirs) {
                 newY = curr[0] + i[0];
                 newX = curr[1] + i[1];
-                if (onBoard(newY,newX) && arenaBoard[newY][newX] == blankToken) {
+                if (onBoard(newY,newX) && arenaBoard[newY][newX] != "#") {
                     if (pathSpace[newY][newX] == undefined ||
                         pathSpace[curr[0]][curr[1]] + 1 < pathSpace[newY][newX]) {
                         pathSpace[newY][newX] = pathSpace[curr[0]][curr[1]] + 1;
@@ -98,11 +98,10 @@ class Creature {
         return pathSpace;
     }
 
-    getNextMove(x,y) {
+    getNextMove(y,x) {
         let newY, newX;
   
         let pathSpace = this.getPathTo(y, x);
-
         let nextMove = undefined;
 
         for (let i of cardinalDirs) {
@@ -126,8 +125,9 @@ class Creature {
         toSearch.push([this.y,this.x]);
         while (toSearch.length) {
             curr = toSearch.pop();
-            if (arenaBoard[curr[0]][curr[1]] == target)
+            if (arenaBoard[curr[0]][curr[1]] == target) {
                 return curr;
+            }
             else {
                 for (let i of cardinalDirs) {
                     newY = curr[0] + i[0];
