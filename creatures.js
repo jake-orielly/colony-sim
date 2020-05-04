@@ -10,10 +10,10 @@ class Creature {
         this.wisdom = attributes.wisdom;
         this.charisma = attributes.charisma;
         this.hp = this.maxHP();
-        this.x = 2;
         this.y = 2;
-        this.direction = [0,1]
-        this.token = "#";
+        this.x = 2;
+        this.target = berryBush;
+        this.token = "@";
         if (attributes.equipment)
             this.equipment = attributes.equipment;
         else
@@ -47,19 +47,100 @@ class Creature {
     }
 
     move() {
-        let newX = this.x + this.direction[1];
-        let newY = this.y + this.direction[0];
-        if (onBoard(newX, newY) && arenaBoard[newY][newX] == blankToken) {
-            placeToken(this.x,this.y,blankToken)
-            this.y += this.direction[0];
-            this.x += this.direction[1];
-            placeToken(this.x,this.y,this.token)
+        let goal = creatures[0].locate("B");
+        let goalY = goal[0];
+        let goalX = goal[1];
+        let nextMove;
+
+        if (this.distanceTo(goalY,goalX) > 1) {
+            nextMove = this.getNextMove(goalY,goalX);
+            placeToken(this.y,this.x,blankToken);
+            this.y = nextMove[0];
+            this.x = nextMove[1];
+            placeToken(this.y,this.x,this.token)
         }
         else {
-            this.direction[1] = 0;
-            this.direction[0] = 0;
-            this.direction[parseInt(Math.random() * 2)] = (parseInt(Math.random() * 2) ? 1  : -1);
+            placeToken(this.y,this.x,this.token);
         }
+    }
+
+    // This doesn't take into account actual distance travel
+    distanceTo(y,x) {
+        return Math.abs(this.y - y) + Math.abs(this.x - x);
+    }
+
+    getPathTo(y,x) {
+        let pathSpace = [];
+        let toExpand = [];
+        let curr, newY, newX;
+        for (let i = 0; i < cols; i++) {
+            pathSpace[i] = [];
+            for (let j = 0; j < rows; j++)
+                pathSpace[i][j] = undefined;
+        }
+        pathSpace[y][x] = 0;
+        toExpand.push([y,x]);
+
+        while (toExpand.length) {
+            curr = toExpand.pop();
+            for (let i of cardinalDirs) {
+                newY = curr[0] + i[0];
+                newX = curr[1] + i[1];
+                if (onBoard(newY,newX) && arenaBoard[newY][newX] == blankToken) {
+                    if (pathSpace[newY][newX] == undefined ||
+                        pathSpace[curr[0]][curr[1]] + 1 < pathSpace[newY][newX]) {
+                        pathSpace[newY][newX] = pathSpace[curr[0]][curr[1]] + 1;
+                        toExpand.unshift([newY,newX]);
+                    }
+                }
+            }
+        }
+        return pathSpace;
+    }
+
+    getNextMove(x,y) {
+        let newY, newX;
+  
+        let pathSpace = this.getPathTo(y, x);
+
+        let nextMove = undefined;
+
+        for (let i of cardinalDirs) {
+            newY = this.y + i[0];
+            newX = this.x + i[1];
+
+            if (onBoard(newY,newX) && pathSpace[newY][newX] != undefined && (
+                nextMove == undefined ||
+                pathSpace[newY][newX] < pathSpace[nextMove[0]][nextMove[1]]
+            ))
+                nextMove = [newY,newX];
+        }
+
+        return nextMove;
+    }
+
+    locate(target) {
+        let searched = {};
+        let toSearch = [];
+        let curr, newY, newX;
+        toSearch.push([this.y,this.x]);
+        while (toSearch.length) {
+            curr = toSearch.pop();
+            if (arenaBoard[curr[0]][curr[1]] == target)
+                return curr;
+            else {
+                for (let i of cardinalDirs) {
+                    newY = curr[0] + i[0];
+                    newX = curr[1] + i[1];
+                    if (onBoard(newY,newX) && !searched[newY + "," + newX]) {
+                        toSearch.push([newY,newX]);
+                        searched[newY + "," + newX] = 1;
+                    }
+                }
+            }
+        }
+
+        return undefined;
     }
 }
 

@@ -1,3 +1,5 @@
+let cardinalDirs = [[1,0],[0,1],[-1,0],[0,-1]];
+
 function prettyPrint(given) {
     if (given == undefined)
         return 0;

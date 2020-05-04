@@ -1,8 +1,9 @@
-let rows = 7;
-let cols = 7;
+let rows = 11;
+let cols = 11;
 let creatures = [];
 let arenaBoard = [];
 let blankToken = ".";
+let berryBush = "B";
 function start() {
     for (let y = 0; y < cols; y++) {
         arenaBoard[y] = [];
@@ -13,23 +14,33 @@ function start() {
         }
     }
 
-    placeToken(3,3,"B")
+    placeToken(8,10,'#')
+    placeToken(8,9,'#')
+    placeToken(10,10,'#')
+    placeToken(10,6,'#')
+    placeToken(9,6,'#')
+    placeToken(8,6,'#')
+    placeToken(7,6,'#')
+    placeToken(6,6,'#')
+    placeToken(6,7,'#')
+    placeToken(6,8,'#')
+    placeToken(6,9,'#')
+    placeToken(8,8,'#')
+    placeToken(9,10,berryBush)
 
     creatures.push(new Bandit());
-    creatures.push(new Bandit());
-    creatures[1].x -= 2;
 
     gameTick = setInterval(() => {
         for (let i of creatures)
             i.move();
-    },100)
+    },200)
 }
 
-function placeToken(x,y,token) {
+function placeToken(y,x,token) {
     arenaBoard[y][x] = token;
-    $("#cell-" + x + "-" + y).html(token);
+    $("#cell-" + y + "-" + x).html(token);
 }
 
-function onBoard(x,y) {
-    return (x >= 0 && x < rows && y >= 0 && y < rows);
+function onBoard(y,x) {
+    return (y >= 0 && y < cols && x >= 0 && x < rows);
 }
