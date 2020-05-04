@@ -11,9 +11,23 @@ class Creature {
         this.charisma = attributes.charisma;
         this.hp = this.maxHP();
         this.y = 2;
-        this.x = 2;
+        this.x = 3;
         this.target = berryBush;
         this.token = "@";
+        this.inventory = [];
+        this.goals = [
+            {
+                target:berryBush,
+                func:this.gather,
+                parent:this
+            },
+            {
+                target:home,
+                func:this.deposit,
+                parent:this
+            }
+        ];
+        this.currGoal = 0;
         if (attributes.equipment)
             this.equipment = attributes.equipment;
         else
@@ -47,11 +61,11 @@ class Creature {
     }
 
     move() {
-        let goal = creatures[0].locate("B");
+        let goal = creatures[0].locate(this.target);
         let goalY = goal[0];
         let goalX = goal[1];
         let nextMove;
-
+        
         if (this.distanceTo(goalY,goalX) > 1) {
             nextMove = this.getNextMove(goalY,goalX);
             placeToken(this.y,this.x,blankToken);
@@ -61,7 +75,30 @@ class Creature {
         }
         else {
             placeToken(this.y,this.x,this.token);
+            this.goals[this.currGoal].func(goalY,goalX);
         }
+    }
+
+    gather(y,x) {
+        this.parent.inventory.push("berry");
+        $("#creature-holding span").html(this.parent.inventory.length);
+        if (this.parent.inventory.length > 4)
+            this.parent.completeCurrGoal();
+    }
+
+    deposit(y,x) {
+        this.parent.inventory.pop();
+        homeInventory.berries++;
+        $("#creature-holding span").html(this.parent.inventory.length);
+        $("#creature-home span").html(homeInventory.berries);
+        if (this.parent.inventory.length == 0)
+            this.parent.completeCurrGoal();
+    }
+
+    completeCurrGoal() {
+        this.currGoal++;
+        this.currGoal %= this.goals.length;
+        this.target = this.goals[this.currGoal].target;
     }
 
     // This doesn't take into account actual distance travel
@@ -86,7 +123,7 @@ class Creature {
             for (let i of cardinalDirs) {
                 newY = curr[0] + i[0];
                 newX = curr[1] + i[1];
-                if (onBoard(newY,newX) && arenaBoard[newY][newX] != "#") {
+                if (onBoard(newY,newX) && (arenaBoard[newY][newX] == blankToken || (newY == this.y && newX == this.x))) {
                     if (pathSpace[newY][newX] == undefined ||
                         pathSpace[curr[0]][curr[1]] + 1 < pathSpace[newY][newX]) {
                         pathSpace[newY][newX] = pathSpace[curr[0]][curr[1]] + 1;
