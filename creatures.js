@@ -1,8 +1,17 @@
 const attributesMaster = ["name","strength","dexterity","constitution","intelligence","wisdom","charisma"];
 
-class Creature { 
+class Entity {
     constructor(attributes) {
         this.name = attributes.name;
+        this.y = attributes.y;
+        this.x = attributes.x;
+        this.token = attributes.token;
+    }
+}
+
+class Creature extends Entity{ 
+    constructor(attributes) {
+        super(attributes)
         this.strength = attributes.strength;
         this.dexterity = attributes.dexterity;
         this.constitution = attributes.constitution;
@@ -10,10 +19,7 @@ class Creature {
         this.wisdom = attributes.wisdom;
         this.charisma = attributes.charisma;
         this.hp = this.maxHP();
-        this.y = 2;
-        this.x = 2;
         this.target = berryBush;
-        this.token = "@";
         if (attributes.equipment)
             this.equipment = attributes.equipment;
         else
@@ -145,9 +151,12 @@ class Creature {
 }
 
 class Bandit extends Creature {
-    constructor() {
+    constructor(y,x,token) {
         super({
             name:'bandit',
+            y:y,
+            x:x,
+            token:token,
             strength: 11,
             dexterity: 12,
             constitution: 12,
@@ -165,7 +174,7 @@ class Bandit extends Creature {
 }
 
 class Knight extends Creature {
-    constructor() {
+    constructor(y,x,token) {
         super({
             name:'knight',
             strength: 16,

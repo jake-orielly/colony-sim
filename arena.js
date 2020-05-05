@@ -28,7 +28,7 @@ function start() {
     placeToken(8,8,'#')
     placeToken(9,10,berryBush)
 
-    creatures.push(new Bandit());
+    creatures.push(new Bandit(2,2,'@'));
 
     gameTick = setInterval(() => {
         for (let i of creatures)
