@@ -1,11 +1,35 @@
 const attributesMaster = ["name","strength","dexterity","constitution","intelligence","wisdom","charisma"];
 
+class BlankSpace {
+    constructor(y,x) {
+        this.y = y;
+        this.x = x;
+        this.token = blankToken;
+    }
+}
+
 class Entity {
     constructor(attributes) {
         this.name = attributes.name;
         this.y = attributes.y;
         this.x = attributes.x;
         this.token = attributes.token;
+        this.inventory = [];
+    }
+
+    render() {
+        placeToken(this);
+    }
+}
+
+class BerryBush extends Entity {
+    constructor(y,x) {
+        super({
+            name:'berry_bush',
+            y:y,
+            x:x,
+            token:"B",
+        })
     }
 }
 
@@ -19,7 +43,7 @@ class Creature extends Entity{
         this.wisdom = attributes.wisdom;
         this.charisma = attributes.charisma;
         this.hp = this.maxHP();
-        this.target = berryBush;
+        this.target = BerryBush;
         if (attributes.equipment)
             this.equipment = attributes.equipment;
         else
@@ -53,20 +77,26 @@ class Creature extends Entity{
     }
 
     move() {
-        let goal = creatures[0].locate("B");
+        let goal = this.locate(BerryBush);
+
+        if (!goal) {
+            placeToken(this);
+            return;
+        }
+
         let goalY = goal[0];
         let goalX = goal[1];
         let nextMove;
 
         if (this.distanceTo(goalY,goalX) > 1) {
             nextMove = this.getNextMove(goalY,goalX);
-            placeToken(this.y,this.x,blankToken);
+            placeToken(new BlankSpace(this.y,this.x));
             this.y = nextMove[0];
             this.x = nextMove[1];
-            placeToken(this.y,this.x,this.token)
+            placeToken(this)
         }
         else {
-            placeToken(this.y,this.x,this.token);
+            placeToken(this);
         }
     }
 
@@ -104,7 +134,7 @@ class Creature extends Entity{
         return pathSpace;
     }
 
-    getNextMove(x,y) {
+    getNextMove(y,x) {
         let newY, newX;
   
         let pathSpace = this.getPathTo(y, x);
@@ -132,7 +162,7 @@ class Creature extends Entity{
         toSearch.push([this.y,this.x]);
         while (toSearch.length) {
             curr = toSearch.pop();
-            if (arenaBoard[curr[0]][curr[1]] == target)
+            if (arenaBoard[curr[0]][curr[1]] instanceof target)
                 return curr;
             else {
                 for (let i of cardinalDirs) {
