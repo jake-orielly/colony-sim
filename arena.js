@@ -3,9 +3,7 @@ let cols = 11;
 let entities = [];
 let arenaBoard = [];
 let blankToken = ".";
-let homeInventory = {
-    berries: 0
-}
+let home = new Home(2,2);
 
 function start() {
     for (let y = 0; y < cols; y++) {
@@ -42,8 +40,8 @@ function start() {
     for (let i = 1; i < 5; i++)
         newWall(i,1,'#')
 
-    entities.push(new Bandit(8,7,'@'));
-    entities.push(new Home(2,2));
+    entities.push(new Bandit(3,2,'@'));
+    entities.push(home);
     entities.push(new BerryBush(9,10));
     gameTickInterval = setInterval(() => {
         gameTick();

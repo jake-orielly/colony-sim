@@ -14,7 +14,31 @@ class Entity {
         this.y = attributes.y;
         this.x = attributes.x;
         this.token = attributes.token;
-        this.inventory = [];
+        this.inventory = {};
+    }
+
+    addItem(item,amount = 1) {
+        if (this.inventory[item])
+            this.inventory[item] += amount;
+        else
+            this.inventory[item] = amount;
+    }
+
+    removeItem(item,amount = 1) {
+        if (this.inventory[item] < amount)
+            return false;
+        else {
+            if (this.inventory[item] == amount)
+                delete this.inventory[item]
+            else
+                this.inventory[item] -= amount;   
+            return true;
+        }
+    }
+
+    giveItem(item,amount,target) {
+        this.removeItem(item,amount);
+        target.addItem(item,amount);
     }
 
     render() {
@@ -58,7 +82,6 @@ class Creature extends Entity{
         this.x = attributes.x;
         this.target = BerryBush;
         this.token = "@";
-        this.inventory = [];
         this.goals = [
             {
                 target:BerryBush,
@@ -129,18 +152,20 @@ class Creature extends Entity{
     }
 
     gather(y,x) {
-        this.parent.inventory.push("berry");
-        $("#creature-holding span").html(this.parent.inventory.length);
-        if (this.parent.inventory.length > 4)
+        this.parent.addItem("berry");
+        $("#creature-holding span").html(this.parent.inventory.berry);
+        if (this.parent.inventory.berry > 4)
             this.parent.completeCurrGoal();
     }
 
     deposit(y,x) {
-        this.parent.inventory.pop();
-        homeInventory.berries++;
-        $("#creature-holding span").html(this.parent.inventory.length);
-        $("#creature-home span").html(homeInventory.berries);
-        if (this.parent.inventory.length == 0)
+        let removed = this.parent.removeItem("berry");
+        if (removed) {
+            home.addItem("berry")
+            $("#creature-holding span").html(this.parent.inventory.berry);
+            $("#creature-home span").html(home.inventory.berry);
+        }
+        else
             this.parent.completeCurrGoal();
     }
 
