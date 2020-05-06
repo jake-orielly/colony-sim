@@ -1,8 +1,52 @@
 const attributesMaster = ["name","strength","dexterity","constitution","intelligence","wisdom","charisma"];
 
-class Creature { 
+class BlankSpace {
+    constructor(y,x) {
+        this.y = y;
+        this.x = x;
+        this.token = blankToken;
+    }
+}
+
+class Entity {
     constructor(attributes) {
         this.name = attributes.name;
+        this.y = attributes.y;
+        this.x = attributes.x;
+        this.token = attributes.token;
+        this.inventory = [];
+    }
+
+    render() {
+        placeToken(this);
+    }
+}
+
+class BerryBush extends Entity {
+    constructor(y,x) {
+        super({
+            name:'berry_bush',
+            y:y,
+            x:x,
+            token:"B",
+        })
+    }
+}
+
+class Home extends Entity{
+    constructor(y,x) {
+        super({
+            name:'home',
+            y:y,
+            x:x,
+            token:"H",
+        })
+    }
+}
+
+class Creature extends Entity{ 
+    constructor(attributes) {
+        super(attributes)
         this.strength = attributes.strength;
         this.dexterity = attributes.dexterity;
         this.constitution = attributes.constitution;
@@ -10,19 +54,19 @@ class Creature {
         this.wisdom = attributes.wisdom;
         this.charisma = attributes.charisma;
         this.hp = this.maxHP();
-        this.y = 2;
-        this.x = 3;
-        this.target = berryBush;
+        this.y = attributes.y;
+        this.x = attributes.x;
+        this.target = BerryBush;
         this.token = "@";
         this.inventory = [];
         this.goals = [
             {
-                target:berryBush,
+                target:BerryBush,
                 func:this.gather,
                 parent:this
             },
             {
-                target:home,
+                target:Home,
                 func:this.deposit,
                 parent:this
             }
@@ -61,21 +105,27 @@ class Creature {
     }
 
     move() {
-        let goal = creatures[0].locate(this.target);
+        let goal = this.locate(this.goals[this.currGoal].target);
+
+        if (!goal) {
+            placeToken(this);
+            return;
+        }
+
         let goalY = goal[0];
         let goalX = goal[1];
         let nextMove;
         
         if (this.distanceTo(goalY,goalX) > 1) {
             nextMove = this.getNextMove(goalY,goalX);
-            placeToken(this.y,this.x,blankToken);
+            placeToken(new BlankSpace(this.y,this.x));
             this.y = nextMove[0];
             this.x = nextMove[1];
-            placeToken(this.y,this.x,this.token)
+            placeToken(this)
         }
         else {
-            placeToken(this.y,this.x,this.token);
-            this.goals[this.currGoal].func(goalY,goalX);
+            placeToken(this);
+            this.goals[this.currGoal].func(goalY,goalX)
         }
     }
 
@@ -139,6 +189,7 @@ class Creature {
         let newY, newX;
   
         let pathSpace = this.getPathTo(y, x);
+        console.table(pathSpace)
         let nextMove = undefined;
 
         for (let i of cardinalDirs) {
@@ -162,9 +213,8 @@ class Creature {
         toSearch.push([this.y,this.x]);
         while (toSearch.length) {
             curr = toSearch.pop();
-            if (arenaBoard[curr[0]][curr[1]] == target) {
+            if (arenaBoard[curr[0]][curr[1]] instanceof target)
                 return curr;
-            }
             else {
                 for (let i of cardinalDirs) {
                     newY = curr[0] + i[0];
@@ -182,9 +232,12 @@ class Creature {
 }
 
 class Bandit extends Creature {
-    constructor() {
+    constructor(y,x,token) {
         super({
             name:'bandit',
+            y:y,
+            x:x,
+            token:token,
             strength: 11,
             dexterity: 12,
             constitution: 12,
@@ -202,7 +255,7 @@ class Bandit extends Creature {
 }
 
 class Knight extends Creature {
-    constructor() {
+    constructor(y,x,token) {
         super({
             name:'knight',
             strength: 16,
