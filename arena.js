@@ -30,6 +30,18 @@ function start() {
     newWall(6,9,'#')
     newWall(8,8,'#')
 
+    for (let i = 2; i < 6; i++)
+        newWall(1,i,'#')
+
+    for (let i = 2; i < 11; i++)
+        newWall(4,i,'#')
+
+    for (let i = 6; i < 11; i++)
+        newWall(i,4,'#')
+
+    for (let i = 1; i < 5; i++)
+        newWall(i,1,'#')
+
     entities.push(new Bandit(8,7,'@'));
     entities.push(new Home(2,2));
     entities.push(new BerryBush(9,10));
