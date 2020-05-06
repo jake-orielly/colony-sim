@@ -12,8 +12,8 @@ function start() {
         arenaBoard[y] = [];
         $("#arena-board").append("<tr></tr>")
         for (let x = 0; x < cols; x++) {
-            arenaBoard[y][x] = blankToken;
-            $("#arena-board tr:last").append('<td id="cell-' + x + '-' + y + '">' + blankToken + '</td>')
+            $("#arena-board tr:last").append('<td id="cell-' + y + '-' + x + '"></td>')
+            placeToken(new BlankSpace(y,x))
         }
     }
 
@@ -30,12 +30,12 @@ function start() {
     newWall(6,9,'#')
     newWall(8,8,'#')
 
-    entities.push(new Bandit(5,9,'@'));
+    entities.push(new Bandit(8,7,'@'));
     entities.push(new Home(2,2));
     entities.push(new BerryBush(9,10));
-    //gameTickInterval = setInterval(() => {
-    //    gameTick();
-    //},100)
+    gameTickInterval = setInterval(() => {
+        gameTick();
+    },100)
 }
 
 function gameTick() {

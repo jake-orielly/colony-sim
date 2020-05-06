@@ -115,7 +115,6 @@ class Creature extends Entity{
         let goalY = goal[0];
         let goalX = goal[1];
         let nextMove;
-        
         if (this.distanceTo(goalY,goalX) > 1) {
             nextMove = this.getNextMove(goalY,goalX);
             placeToken(new BlankSpace(this.y,this.x));
@@ -173,7 +172,7 @@ class Creature extends Entity{
             for (let i of cardinalDirs) {
                 newY = curr[0] + i[0];
                 newX = curr[1] + i[1];
-                if (onBoard(newY,newX) && (arenaBoard[newY][newX] == blankToken || (newY == this.y && newX == this.x))) {
+                if (onBoard(newY,newX) && (arenaBoard[newY][newX] instanceof BlankSpace || (newY == this.y && newX == this.x))) {
                     if (pathSpace[newY][newX] == undefined ||
                         pathSpace[curr[0]][curr[1]] + 1 < pathSpace[newY][newX]) {
                         pathSpace[newY][newX] = pathSpace[curr[0]][curr[1]] + 1;
@@ -189,7 +188,6 @@ class Creature extends Entity{
         let newY, newX;
   
         let pathSpace = this.getPathTo(y, x);
-        console.table(pathSpace)
         let nextMove = undefined;
 
         for (let i of cardinalDirs) {
