@@ -25,20 +25,22 @@ class Entity {
     }
 
     removeItem(item,amount = 1) {
-        if (this.inventory[item] < amount)
+        if (!this.inventory[item] || this.inventory[item] < amount)
             return false;
         else {
             if (this.inventory[item] == amount)
-                delete this.inventory[item]
+                delete this.inventory[item];
             else
                 this.inventory[item] -= amount;   
             return true;
         }
     }
 
-    giveItem(item,amount,target) {
-        this.removeItem(item,amount);
-        target.addItem(item,amount);
+    takeItem(item,amount,target) {
+        let removed = target.removeItem(item,amount);
+        if (removed)
+            this.addItem(item,amount);
+        return removed;
     }
 
     render() {
@@ -54,6 +56,18 @@ class BerryBush extends Entity {
             x:x,
             token:"B",
         })
+        this.inventory = {"berry":10};
+    }
+
+    removeItem(item,amount = 1) {
+        let removed = super.removeItem(item,amount);
+        if (removed) {
+            if (!this.inventory.berry) {
+                entities.splice(entities.indexOf(this), 1);
+                placeToken(new BlankSpace(this.y,this.x))
+            }
+        }
+        return removed;
     }
 }
 
@@ -152,17 +166,19 @@ class Creature extends Entity{
     }
 
     gather(y,x) {
-        this.parent.addItem("berry");
+        this.parent.takeItem("berry",1,arenaBoard[y][x]);
         $("#creature-holding span").html(this.parent.inventory.berry);
         if (this.parent.inventory.berry > 4)
             this.parent.completeCurrGoal();
     }
 
     deposit(y,x) {
-        let removed = this.parent.removeItem("berry");
+        let removed = home.takeItem("berry",1,this.parent)
         if (removed) {
-            home.addItem("berry")
-            $("#creature-holding span").html(this.parent.inventory.berry);
+            if (!this.parent.inventory.berry)
+                $("#creature-holding span").html(0);
+            else
+                $("#creature-holding span").html(this.parent.inventory.berry);
             $("#creature-home span").html(home.inventory.berry);
         }
         else

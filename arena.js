@@ -11,7 +11,7 @@ function start() {
         $("#arena-board").append("<tr></tr>")
         for (let x = 0; x < cols; x++) {
             $("#arena-board tr:last").append('<td id="cell-' + y + '-' + x + '"></td>')
-            placeToken(new BlankSpace(y,x))
+            placeToken(new BlankSpace(y,x));
         }
     }
 
@@ -45,7 +45,7 @@ function start() {
     entities.push(new BerryBush(9,10));
     gameTickInterval = setInterval(() => {
         gameTick();
-    },100)
+    },50)
 }
 
 function gameTick() {
