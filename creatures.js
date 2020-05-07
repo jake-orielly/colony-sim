@@ -109,6 +109,8 @@ class Creature extends Entity{
             }
         ];
         this.currGoal = 0;
+        this.goalY = undefined;
+        this.goalX = undefined;
         if (attributes.equipment)
             this.equipment = attributes.equipment;
         else
@@ -142,18 +144,20 @@ class Creature extends Entity{
     }
 
     move() {
-        let goal = this.locate(this.goals[this.currGoal].target);
+        if (this.goalY == undefined) {
+            let newGoalLoc = this.locate(this.goals[this.currGoal].target);
+            this.goalY = newGoalLoc[0];
+            this.goalX = newGoalLoc[1];
+        }
 
-        if (!goal) {
+        if (this.goalY == undefined) {
             placeToken(this);
             return;
         }
 
-        let goalY = goal[0];
-        let goalX = goal[1];
         let nextMove;
-        if (this.distanceTo(goalY,goalX) > 1) {
-            nextMove = this.getNextMove(goalY,goalX);
+        if (this.distanceTo(this.goalY,this.goalX) > 1) {
+            nextMove = this.getNextMove(this.goalY,this.goalX);
             placeToken(new BlankSpace(this.y,this.x));
             this.y = nextMove[0];
             this.x = nextMove[1];
@@ -161,7 +165,7 @@ class Creature extends Entity{
         }
         else {
             placeToken(this);
-            this.goals[this.currGoal].func(goalY,goalX)
+            this.goals[this.currGoal].func(this.goalY,this.goalX)
         }
     }
 
@@ -189,6 +193,8 @@ class Creature extends Entity{
         this.currGoal++;
         this.currGoal %= this.goals.length;
         this.target = this.goals[this.currGoal].target;
+        this.goalY = undefined;
+        this.goalX = undefined;
     }
 
     // This doesn't take into account actual distance travel
@@ -266,7 +272,7 @@ class Creature extends Entity{
             }
         }
 
-        return undefined;
+        return [undefined,undefined];
     }
 }
 
