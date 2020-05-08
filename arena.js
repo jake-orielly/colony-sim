@@ -48,7 +48,7 @@ function start() {
     entities.push(new BerryBush(3,9));
     entities.push(new BerryBush(9,10));
     entities.push(new BerryBush(10,5));
-    entities.push(new PineTree(2,6));
+    entities.push(new PineTree(1,6));
     entities.push(new PineTree(2,10));
     entities.push(new PineTree(7,3));
     gameTickInterval = setInterval(() => {
