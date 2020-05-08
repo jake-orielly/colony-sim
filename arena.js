@@ -1,5 +1,5 @@
-let rows = 11;
-let cols = 11;
+let rows = 13;
+let cols = 13;
 let entities = [];
 let arenaBoard = [];
 let blankToken = ".";
@@ -31,10 +31,10 @@ function start() {
     for (let i = 2; i < 6; i++)
         newWall(1,i,'#')
 
-    for (let i = 2; i < 11; i++)
+    for (let i = 2; i < 13; i++)
         newWall(4,i,'#')
 
-    for (let i = 6; i < 11; i++)
+    for (let i = 6; i < 13; i++)
         newWall(i,4,'#')
 
     for (let i = 1; i < 5; i++)
@@ -46,13 +46,18 @@ function start() {
     entities.push(home);
     entities.push(new BerryBush(0,10));
     entities.push(new BerryBush(3,9));
-    entities.push(new BerryBush(9,10));
-    entities.push(new BerryBush(10,5));
+    entities.push(new BerryBush(9,12));
+    entities.push(new BerryBush(12,5));
     entities.push(new PineTree(1,6));
     entities.push(new PineTree(2,10));
     entities.push(new PineTree(7,3));
     entities.push(new IronVein(3,7));
     entities.push(new IronVein(8,1));
+    entities.push(new CoalVein(9,0));
+    entities.push(new CoalVein(10,2));
+    entities.push(new FlaxPlant(12,9));
+    entities.push(new FlaxPlant(12,10));
+    entities.push(new OakTree(6,12));
     togglePlay();
 }
 

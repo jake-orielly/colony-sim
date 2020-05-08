@@ -44,6 +44,19 @@ class PineTree extends ResourceNode {
     }
 }
 
+class OakTree extends ResourceNode {
+    constructor(y,x) {
+        super({
+            name:'oak_tree',
+            y:y,
+            x:x,
+            token:"O",
+            inventory:{oak_log:{item:OakLog,amount:15}}
+        })
+    }
+}
+
+
 class IronVein extends ResourceNode {
     constructor(y,x) {
         super({
@@ -52,6 +65,30 @@ class IronVein extends ResourceNode {
             x:x,
             token:"I",
             inventory:{iron_ore:{item:IronOre,amount:10}}
+        })
+    }
+}
+
+class CoalVein extends ResourceNode {
+    constructor(y,x) {
+        super({
+            name:'coal_vein',
+            y:y,
+            x:x,
+            token:"C",
+            inventory:{coal_vein:{item:Coal,amount:10}}
+        })
+    }
+}
+
+class FlaxPlant extends ResourceNode {
+    constructor(y,x) {
+        super({
+            name:'flax_plant',
+            y:y,
+            x:x,
+            token:"F",
+            inventory:{flax:{item:Flax,amount:5}}
         })
     }
 }
