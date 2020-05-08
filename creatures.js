@@ -197,11 +197,9 @@ class Creature extends Entity{
 
     gather(y,x) {
         this.parent.takeItem(Object.keys(arenaBoard[y][x].inventory)[0],1,arenaBoard[y][x]);
-        renderInventory();
     }
     deposit(y,x) {
         home.takeItem(Object.keys(this.parent.inventory)[0],1,this.parent)
-        renderInventory();
         renderStorage();
     }
 
@@ -395,14 +393,8 @@ class Knight extends Creature {
     }
 }
 
-function renderInventory() {
-    $("#inventory-items").empty();
-    for (let i in entities[0].inventory)
-        $("#inventory-items").append("<p>" + prettyPrint(i) + ": " + entities[0].inventory[i].amount)
-}
-
 function renderStorage() {
-    $("#storage-items").empty();
+    $("#inventory-items").empty();
     for (let i in home.inventory)
-        $("#storage-items").append("<p>" + prettyPrint(i) + ": " + home.inventory[i].amount)
+        $("#inventory-items").append("<p>" + prettyPrint(i) + ": " + home.inventory[i].amount)
 }

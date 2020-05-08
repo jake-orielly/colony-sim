@@ -16,16 +16,14 @@
     <script src="jquery-3.4.1.min.js"></script>
 </head>
     <body onload = "start()">
-        <table id="arena-board">
-        </table>
-        <button id="play-button" onclick="togglePlay()">Play</button>
-        <div>
-            <p id="creature-holding">The creature is holding:</p>
+        <div id="inventory-div">
+            <p id="inventory-label">Inventory</p>
             <div id="inventory-items"></div>
         </div>
-        <div>
-            <p id="creature-home">The creature has stored:</p>
-            <div id="storage-items"></div>
+        <div id="terrarium-div">
+            <table id="arena-board">
+            </table>
+            <button id="play-button" onclick="togglePlay()">Play</button>
         </div>
         <script type="text/javascript" src="arena.js"></script>
     </body>

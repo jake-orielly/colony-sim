@@ -41,8 +41,8 @@ function start() {
         newWall(i,1,'#')
 
     entities.push(new Bandit(3,2,'@'));
-    entities.push(new Bandit(2,3,'&'));
-    entities.push(new Bandit(3,3,'%'));
+    //entities.push(new Bandit(2,3,'&'));
+    //entities.push(new Bandit(3,3,'%'));
     entities.push(home);
     entities.push(new BerryBush(0,10));
     entities.push(new BerryBush(3,9));
@@ -83,7 +83,7 @@ function togglePlay() {
     if (typeof gameTickInterval == "undefined") {
         gameTickInterval = setInterval(() => {
             gameTick();
-        },100)
+        },50)
         $("#play-button").html("Pause");
     }
     else {

@@ -1,4 +1,13 @@
 #arena-board td {
-    width: 1em;
-    height: 1em;
+    width: 1rem;
+    height: 1rem;
+}
+
+#inventory-div, #terrarium-div {
+    float: left;
+}
+
+#inventory-div {
+    width: 8rem;
+    margin-right: 5rem;
 }
