@@ -51,9 +51,7 @@ function start() {
     entities.push(new PineTree(1,6));
     entities.push(new PineTree(2,10));
     entities.push(new PineTree(7,3));
-    gameTickInterval = setInterval(() => {
-        gameTick();
-    },100)
+    togglePlay();
 }
 
 function gameTick() {
@@ -79,4 +77,18 @@ function onBoard(y,x) {
 
 function newWall(y,x,token) {
     placeToken({y:y,x:x,token:token})
+}
+
+function togglePlay() {
+    if (typeof gameTickInterval == "undefined") {
+        gameTickInterval = setInterval(() => {
+            gameTick();
+        },100)
+        $("#play-button").html("Pause");
+    }
+    else {
+        clearInterval(gameTickInterval);
+        gameTickInterval = undefined;
+        $("#play-button").html("Play");
+    }
 }
