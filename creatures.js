@@ -46,6 +46,13 @@ class Entity {
     render() {
         placeToken(this);
     }
+
+    inventoryTotal() {
+        let total = 0;
+        for (let i in this.inventory)
+            total += this.inventory[i];
+        return total;
+    }
 }
 
 class BerryBush extends Entity {
@@ -96,19 +103,7 @@ class Creature extends Entity{
         this.x = attributes.x;
         this.target = BerryBush;
         this.token = "@";
-        this.goals = [
-            {
-                target:BerryBush,
-                func:this.gather,
-                parent:this
-            },
-            {
-                target:Home,
-                func:this.deposit,
-                parent:this
-            }
-        ];
-        this.currGoal = 0;
+        this.goals = {};
         this.goalY = undefined;
         this.goalX = undefined;
         if (attributes.equipment)
@@ -145,7 +140,7 @@ class Creature extends Entity{
 
     move() {
         if (this.goalY == undefined) {
-            let newGoalLoc = this.locate(this.goals[this.currGoal].target);
+            let newGoalLoc = this.locate(this.currGoal.target);
             this.goalY = newGoalLoc.y;
             this.goalX = newGoalLoc.x;
         }
@@ -165,34 +160,29 @@ class Creature extends Entity{
         }
         else {
             placeToken(this);
-            this.goals[this.currGoal].func(this.goalY,this.goalX)
+            this.currGoal.func(this.goalY,this.goalX);
+            if (this.currGoal.completeCondition())
+                this.completeCurrGoal();
         }
     }
 
     gather(y,x) {
         this.parent.takeItem("berry",1,arenaBoard[y][x]);
         $("#creature-holding span").html(this.parent.inventory.berry);
-        if (this.parent.inventory.berry > 4)
-            this.parent.completeCurrGoal();
     }
 
     deposit(y,x) {
-        let removed = home.takeItem("berry",1,this.parent)
-        if (removed) {
-            if (!this.parent.inventory.berry)
-                $("#creature-holding span").html(0);
-            else
-                $("#creature-holding span").html(this.parent.inventory.berry);
-            $("#creature-home span").html(home.inventory.berry);
-        }
+        home.takeItem("berry",1,this.parent)
+        if (!this.parent.inventory.berry)
+            $("#creature-holding span").html(0);
         else
-            this.parent.completeCurrGoal();
+            $("#creature-holding span").html(this.parent.inventory.berry);
+        $("#creature-home span").html(home.inventory.berry);
     }
 
     completeCurrGoal() {
-        this.currGoal++;
-        this.currGoal %= this.goals.length;
-        this.target = this.goals[this.currGoal].target;
+        this.currGoal = this.currGoal.nextGoal;
+        this.target = this.currGoal.target;
         this.goalY = undefined;
         this.goalX = undefined;
     }
@@ -312,6 +302,27 @@ class Bandit extends Creature {
                 new Boots()
             ]
         })
+        this.goals = {
+            gatherBerries: {
+                target:BerryBush,
+                func:this.gather,
+                completeCondition:() => {
+                    return this.inventoryTotal() >= 5;
+                },
+                parent:this,
+            },
+            returnItems: {
+                target:Home,
+                func:this.deposit,
+                completeCondition:() => {
+                    return this.inventoryTotal() <= 0;
+                },
+                parent:this,
+            }
+        }
+        this.goals.gatherBerries.nextGoal = this.goals.returnItems;
+        this.goals.returnItems.nextGoal = this.goals.gatherBerries;
+        this.currGoal = this.goals.gatherBerries;
     }
 }
 
