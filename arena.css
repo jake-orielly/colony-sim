@@ -1,13 +1,32 @@
+#arena-board {
+    text-align: center;
+}
+
 #arena-board td {
     width: 1rem;
     height: 1rem;
 }
 
-#inventory-div, #terrarium-div {
+#inventory-div, #terrarium-div, #info-div {
     float: left;
 }
 
 #inventory-div {
     width: 8rem;
     margin-right: 5rem;
+}
+
+#info-div.active {
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 0.5em;
+    margin-left: 2rem;
+}
+
+#info-div p {
+    margin-top: 0;
+}
+
+td.selected {
+    background-color: gold;
 }

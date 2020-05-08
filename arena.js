@@ -15,6 +15,24 @@ function start() {
         }
     }
 
+    $("td").click(function() {
+        console.log(1)
+        let y = $(this).attr("id").split("-")[1];
+        let x = $(this).attr("id").split("-")[2];
+        let selected = arenaBoard[y][x];
+        $("#info-div").empty();
+        if (selected.name) {
+            $("#info-div").addClass("active");
+            $("#info-div").append("<p>" + prettyPrint(selected.name) + "</p>");
+            for (let i in selected.inventory)
+                $("#info-div").append("<p>" + prettyPrint(i) + ": " + selected.inventory[i].amount + "</p>");
+        }
+        else
+            $("#info-div").removeClass("active");
+        $("td.selected").removeClass("selected");
+        $(this).addClass("selected");
+    })
+
     newWall(8,10,'#')
     newWall(8,9,'#')
     newWall(10,10,'#')

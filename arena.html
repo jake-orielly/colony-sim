@@ -2,7 +2,7 @@
     <head>
     <title>Colony Sim</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="arena.css">
     <script src="./utility_functions.js"></script>
     <script src="./items.js"></script>
@@ -23,9 +23,11 @@
             <button onclick="craftItem(IronIngot)" class="clickable">Smelt Iron</button>
         </div>
         <div id="terrarium-div">
-            <table id="arena-board">
+            <table class="clickable" id="arena-board">
             </table>
             <button id="play-button" onclick="togglePlay()">Play</button>
+        </div>
+        <div id="info-div">
         </div>
         <script type="text/javascript" src="arena.js"></script>
     </body>
