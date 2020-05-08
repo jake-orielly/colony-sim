@@ -124,7 +124,7 @@ class Creature extends Entity{
         this.y = attributes.y;
         this.x = attributes.x;
         this.target = BerryBush;
-        this.token = "@";
+        this.token = attributes.token;
         this.goals = {};
         this.goalY = undefined;
         this.goalX = undefined;
@@ -161,7 +161,7 @@ class Creature extends Entity{
     }
 
     move() {
-        if (this.goalY == undefined) {
+        if (this.goalY == undefined || !this.reaffirmGoal()) {
             let newGoalLoc = this.locate(this.currGoal.target);
             this.goalY = newGoalLoc.y;
             this.goalX = newGoalLoc.x;
@@ -186,6 +186,12 @@ class Creature extends Entity{
             if (this.currGoal.completeCondition())
                 this.completeCurrGoal();
         }
+    }
+
+    // Confirm our goal is still where we think it is
+    reaffirmGoal() {
+        if (!arenaBoard instanceof this.currGoal.target)
+            return false;
     }
 
     gather(y,x) {
@@ -227,7 +233,8 @@ class Creature extends Entity{
             for (let i of cardinalDirs) {
                 newY = curr[0] + i[0];
                 newX = curr[1] + i[1];
-                if (onBoard(newY,newX) && (arenaBoard[newY][newX] instanceof BlankSpace || (newY == this.y && newX == this.x))) {
+                if (onBoard(newY,newX) && 
+                    (this.isPathable(arenaBoard[newY][newX]) || (this.y == newY && this.x == newX))) {
                     if (pathSpace[newY][newX] == undefined ||
                         pathSpace[curr[0]][curr[1]] + 1 < pathSpace[newY][newX]) {
                         pathSpace[newY][newX] = pathSpace[curr[0]][curr[1]] + 1;
@@ -243,7 +250,12 @@ class Creature extends Entity{
         let newY, newX;
   
         let pathSpace = this.getPathTo(y, x);
-        let nextMove = undefined;
+
+        //If we can't find a path to the target, don't move
+        if (pathSpace[this.y][this.x] == undefined)
+            return [this.y,this.x];
+        
+            let nextMove = undefined;
 
         for (let i of cardinalDirs) {
             newY = this.y + i[0];
@@ -297,6 +309,10 @@ class Creature extends Entity{
                         result.x = j;
                     }
         return result;
+    }
+
+    isPathable(cell) {
+        return ["."].indexOf(cell.token) != -1;
     }
 }
 

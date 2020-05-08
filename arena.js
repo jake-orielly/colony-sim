@@ -41,9 +41,11 @@ function start() {
         newWall(i,1,'#')
 
     entities.push(new Bandit(3,2,'@'));
+    entities.push(new Bandit(2,3,'&'));
+    entities.push(new Bandit(3,3,'%'));
     entities.push(home);
     entities.push(new BerryBush(0,10));
-    entities.push(new BerryBush(3,8));
+    entities.push(new BerryBush(3,9));
     entities.push(new BerryBush(9,10));
     entities.push(new BerryBush(10,5));
     entities.push(new PineTree(2,6));
@@ -51,7 +53,7 @@ function start() {
     entities.push(new PineTree(7,3));
     gameTickInterval = setInterval(() => {
         gameTick();
-    },50)
+    },100)
 }
 
 function gameTick() {
