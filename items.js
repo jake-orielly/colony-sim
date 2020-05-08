@@ -13,26 +13,32 @@ class Item {
     }
 
     addToInventory(amount = 1) {
-        if (inventory[this.name])
-            inventory[this.name].amount += amount;
+        if (home.inventory[this.name])
+            home.inventory[this.name].amount += amount;
         else
-            inventory[this.name] = {item:this,amount:amount};
+            home.inventory[this.name] = {item:this,amount:amount};
 
         renderInventory();
     }
 
     removeFromInventory(amount = 1) {
-        inventory[this.name].amount -= amount
-        if (inventory[this.name].amount == 0)
-                delete inventory[this.name];
+        home.inventory[this.name].amount -= amount
+        if (home.inventory[this.name].amount == 0)
+                delete home.inventory[this.name];
         renderInventory();
     }
 
     haveAmount(amount = 1) {
-        if (inventory[this.name])
-            return inventory[this.name].amount >= amount;
+        if (home.inventory[this.name])
+            return home.inventory[this.name].amount >= amount;
         return false;
     }
+}
+
+function craftItem(Item) {
+    console.log(new Item)
+    console.log(new Item().craft)
+    new Item().craft();
 }
 
 // --- Produce ---

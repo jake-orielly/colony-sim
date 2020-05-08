@@ -10,12 +10,6 @@ function gather(Item) {
     new Item().create();
 }
 
-function craftItem(Item) {
-    console.log(new Item)
-    console.log(new Item().craft)
-    new Item().craft();
-}
-
 function renderInventory() {
     let invTable = $('#inventory-table tbody');
     let currRow;

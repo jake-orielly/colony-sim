@@ -155,7 +155,7 @@ class Creature extends Entity{
     }
     deposit(y,x) {
         home.takeItem(Object.keys(this.parent.inventory)[0],1,this.parent)
-        renderStorage();
+        renderInventory();
     }
 
     completeCurrGoal() {
@@ -348,7 +348,7 @@ class Knight extends Creature {
     }
 }
 
-function renderStorage() {
+function renderInventory() {
     $("#inventory-items").empty();
     for (let i in home.inventory)
         $("#inventory-items").append("<p>" + prettyPrint(i) + ": " + home.inventory[i].amount)
