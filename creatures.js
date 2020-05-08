@@ -55,26 +55,48 @@ class Entity {
     }
 }
 
-class BerryBush extends Entity {
+class ResourceNode extends Entity {
+    constructor(attributes) {
+        super({
+            name:attributes.name,
+            y:attributes.y,
+            x:attributes.x,
+            token:attributes.token,
+        })
+        this.inventory = attributes.inventory;
+    }
+
+    removeItem(item,amount = 1) {
+        let removed = super.removeItem(item,amount);
+        if (this.inventoryTotal() == 0) {
+            entities.splice(entities.indexOf(this), 1);
+            placeToken(new BlankSpace(this.y,this.x))
+        }
+        return removed;
+    }
+}
+
+class BerryBush extends ResourceNode {
     constructor(y,x) {
         super({
             name:'berry_bush',
             y:y,
             x:x,
             token:"B",
+            inventory:{"berry":10}
         })
-        this.inventory = {"berry":10};
     }
+}
 
-    removeItem(item,amount = 1) {
-        let removed = super.removeItem(item,amount);
-        if (removed) {
-            if (!this.inventory.berry) {
-                entities.splice(entities.indexOf(this), 1);
-                placeToken(new BlankSpace(this.y,this.x))
-            }
-        }
-        return removed;
+class PineTree extends ResourceNode {
+    constructor(y,x) {
+        super({
+            name:'pine_tree',
+            y:y,
+            x:x,
+            token:"T",
+            inventory:{"pine_logs":10}
+        })
     }
 }
 
