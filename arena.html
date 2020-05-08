@@ -18,8 +18,14 @@
     <body onload = "start()">
         <table id="arena-board">
         </table>
-        <p id="creature-holding">The creature is holding <span>0</span> berries.</p>
-        <p id="creature-home">The creature has <span>0</span> berries stored at home.</p>
+        <div>
+            <p id="creature-holding">The creature is holding:</p>
+            <div id="inventory-items"></div>
+        </div>
+        <div>
+            <p id="creature-home">The creature has stored:</p>
+            <div id="storage-items"></div>
+        </div>
         <script type="text/javascript" src="arena.js"></script>
     </body>
 </html>

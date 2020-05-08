@@ -95,7 +95,7 @@ class PineTree extends ResourceNode {
             y:y,
             x:x,
             token:"T",
-            inventory:{"pine_logs":10}
+            inventory:{"pine_logs":20}
         })
     }
 }
@@ -189,21 +189,17 @@ class Creature extends Entity{
     }
 
     gather(y,x) {
-        this.parent.takeItem("berry",1,arenaBoard[y][x]);
-        $("#creature-holding span").html(this.parent.inventory.berry);
+        this.parent.takeItem(Object.keys(arenaBoard[y][x].inventory)[0],1,arenaBoard[y][x]);
+        renderInventory();
     }
-
     deposit(y,x) {
-        home.takeItem("berry",1,this.parent)
-        if (!this.parent.inventory.berry)
-            $("#creature-holding span").html(0);
-        else
-            $("#creature-holding span").html(this.parent.inventory.berry);
-        $("#creature-home span").html(home.inventory.berry);
+        home.takeItem(Object.keys(this.parent.inventory)[0],1,this.parent)
+        renderInventory();
+        renderStorage();
     }
 
     completeCurrGoal() {
-        this.currGoal = this.currGoal.nextGoal;
+        this.currGoal = this.currGoal.nextGoal();
         this.target = this.currGoal.target;
         this.goalY = undefined;
         this.goalX = undefined;
@@ -333,6 +329,14 @@ class Bandit extends Creature {
                 },
                 parent:this,
             },
+            gatherWood: {
+                target:PineTree,
+                func:this.gather,
+                completeCondition:() => {
+                    return this.inventoryTotal() >= 5;
+                },
+                parent:this,
+            },
             returnItems: {
                 target:Home,
                 func:this.deposit,
@@ -342,8 +346,11 @@ class Bandit extends Creature {
                 parent:this,
             }
         }
-        this.goals.gatherBerries.nextGoal = this.goals.returnItems;
-        this.goals.returnItems.nextGoal = this.goals.gatherBerries;
+        this.goals.gatherBerries.nextGoal = () => { return this.goals.returnItems};
+        this.goals.gatherWood.nextGoal = () => { return this.goals.returnItems};
+        this.goals.returnItems.nextGoal = () => {
+            return (home.inventory.berry >= 20 ? this.goals.gatherWood : this.goals.gatherBerries);
+        };
         this.currGoal = this.goals.gatherBerries;
     }
 }
@@ -369,4 +376,16 @@ class Knight extends Creature {
             ]
         })
     }
+}
+
+function renderInventory() {
+    $("#inventory-items").empty();
+    for (let i in entities[0].inventory)
+        $("#inventory-items").append("<p>" + prettyPrint(i) + ": " + entities[0].inventory[i])
+}
+
+function renderStorage() {
+    $("#storage-items").empty();
+    for (let i in home.inventory)
+        $("#storage-items").append("<p>" + prettyPrint(i) + ": " + home.inventory[i])
 }
