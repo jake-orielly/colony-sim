@@ -146,8 +146,8 @@ class Creature extends Entity{
     move() {
         if (this.goalY == undefined) {
             let newGoalLoc = this.locate(this.goals[this.currGoal].target);
-            this.goalY = newGoalLoc[0];
-            this.goalX = newGoalLoc[1];
+            this.goalY = newGoalLoc.y;
+            this.goalX = newGoalLoc.x;
         }
 
         if (this.goalY == undefined) {
@@ -252,27 +252,43 @@ class Creature extends Entity{
     }
 
     locate(target) {
-        let searched = {};
-        let toSearch = [];
+        let pathSpace = [];
+        let toExpand = [];
         let curr, newY, newX;
-        toSearch.push([this.y,this.x]);
-        while (toSearch.length) {
-            curr = toSearch.pop();
-            if (arenaBoard[curr[0]][curr[1]] instanceof target)
-                return curr;
-            else {
-                for (let i of cardinalDirs) {
-                    newY = curr[0] + i[0];
-                    newX = curr[1] + i[1];
-                    if (onBoard(newY,newX) && !searched[newY + "," + newX]) {
-                        toSearch.push([newY,newX]);
-                        searched[newY + "," + newX] = 1;
+        let best = -1;
+        let result = {y:undefined,x:undefined};
+        for (let i = 0; i < cols; i++) {
+            pathSpace[i] = [];
+            for (let j = 0; j < rows; j++)
+                pathSpace[i][j] = undefined;
+        }
+        pathSpace[this.y][this.x] = 0;
+        toExpand.push([this.y,this.x]);
+
+        while (toExpand.length) {
+            curr = toExpand.pop();
+            for (let i of cardinalDirs) {
+                newY = curr[0] + i[0];
+                newX = curr[1] + i[1];
+                if (onBoard(newY,newX) && (arenaBoard[newY][newX].token != "#")) {
+                    if (pathSpace[newY][newX] == undefined ||
+                        pathSpace[curr[0]][curr[1]] + 1 < pathSpace[newY][newX]) {
+                        pathSpace[newY][newX] = pathSpace[curr[0]][curr[1]] + 1;
+                        toExpand.unshift([newY,newX]);
                     }
                 }
             }
         }
-
-        return [undefined,undefined];
+        
+        for (let i = 0; i < cols; i++) 
+            for (let j = 0; j < rows; j++)
+                if (arenaBoard[i][j] instanceof target &&
+                    (best == -1 || pathSpace[i][j] < best)) {
+                        best = pathSpace[i][j];
+                        result.y = i;
+                        result.x = j;
+                    }
+        return result;
     }
 }
 
