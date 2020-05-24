@@ -16,7 +16,6 @@ function start() {
     }
 
     $("td").click(function() {
-        console.log(1)
         let y = $(this).attr("id").split("-")[1];
         let x = $(this).attr("id").split("-")[2];
         let selected = arenaBoard[y][x];
@@ -62,6 +61,7 @@ function start() {
     //entities.push(new Bandit(2,3,'&'));
     //entities.push(new Bandit(3,3,'%'));
     entities.push(home);
+    entities.push(new Forge(2,5))
     entities.push(new BerryBush(0,10));
     entities.push(new BerryBush(3,9));
     entities.push(new BerryBush(9,12));

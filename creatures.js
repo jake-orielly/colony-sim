@@ -56,17 +56,6 @@ class Entity {
     }
 }
 
-class Home extends Entity{
-    constructor(y,x) {
-        super({
-            name:'home',
-            y:y,
-            x:x,
-            token:"H",
-        })
-    }
-}
-
 class Creature extends Entity{ 
     constructor(attributes) {
         super(attributes)
@@ -138,7 +127,7 @@ class Creature extends Entity{
         }
         else {
             placeToken(this);
-            this.currGoal.func(this.goalY,this.goalX);
+            this.currGoal.func(this.goalY,this.goalX,this.currGoal.funcArgs);
             if (this.currGoal.completeCondition())
                 this.completeCurrGoal();
         }
@@ -146,15 +135,20 @@ class Creature extends Entity{
 
     // Confirm our goal is still where we think it is
     reaffirmGoal() {
-        if (!arenaBoard instanceof this.currGoal.target)
+        if (!arenaBoard[this.goalY][this.goalX] instanceof this.currGoal.target)
             return false;
     }
 
     gather(y,x) {
         this.parent.takeItem(Object.keys(arenaBoard[y][x].inventory)[0],1,arenaBoard[y][x]);
     }
+
+    getItem(x,y,item) {
+        this.parent.takeItem(item,1,arenaBoard[y][x]);
+    }
+
     deposit(y,x) {
-        home.takeItem(Object.keys(this.parent.inventory)[0],1,this.parent)
+        arenaBoard[y][x].takeItem(Object.keys(this.parent.inventory)[0],1,this.parent)
         renderInventory();
     }
 
@@ -291,19 +285,36 @@ class Bandit extends Creature {
             ]
         })
         this.goals = {
-            gatherBerries: {
+            /*gatherBerries: {
                 target:BerryBush,
                 func:this.gather,
                 completeCondition:() => {
                     return this.inventoryTotal() >= 5;
                 },
                 parent:this,
-            },
-            gatherWood: {
+            },*/
+            gatherIron: {
                 target:IronVein,
                 func:this.gather,
                 completeCondition:() => {
                     return this.inventoryTotal() >= 5;
+                },
+                parent:this,
+            },
+            retrieveIron: {
+                target:Home,
+                func:this.getItem,
+                funcArgs:"iron_ore",
+                completeCondition:() => {
+                    return this.inventoryTotal() >= 5;
+                },
+                parent:this
+            },
+            smeltIron: {
+                target:Forge,
+                func:this.deposit,
+                completeCondition:() => {
+                    return this.inventoryTotal() <= 0;
                 },
                 parent:this,
             },
@@ -316,12 +327,14 @@ class Bandit extends Creature {
                 parent:this,
             }
         }
-        this.goals.gatherBerries.nextGoal = () => { return this.goals.returnItems};
-        this.goals.gatherWood.nextGoal = () => { return this.goals.returnItems};
+        //this.goals.gatherBerries.nextGoal = () => { return this.goals.returnItems};
+        this.goals.gatherIron.nextGoal = () => { return this.goals.returnItems};
+        this.goals.retrieveIron.nextGoal = () => { return this.goals.smeltIron};
+        this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.returnItems.nextGoal = () => {
-            return (home.inventory.berry.amount >= 20 ? this.goals.gatherWood : this.goals.gatherBerries);
+            return (home.inventory.iron_ore.amount <= 9 ? this.goals.gatherIron : this.goals.retrieveIron);
         };
-        this.currGoal = this.goals.gatherBerries;
+        this.currGoal = this.goals.gatherIron;
     }
 }
 
