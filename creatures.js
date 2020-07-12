@@ -285,21 +285,16 @@ class Bandit extends Creature {
             ]
         })
         this.goals = {
-            gatherBerries: {
-                target:BerryBush,
-                func:this.gather,
-                completeCondition:() => {
-                    return this.inventoryTotal() >= 5;
-                },
-                parent:this,
-            },
-            gatherIron: {
-                target:IronVein,
-                func:this.gather,
-                completeCondition:() => {
-                    return this.inventoryTotal() >= 5;
-                },
-                parent:this,
+            gather: function(creature,resource) {
+                return {
+                    target:resource,
+                    func:creature.gather,
+                    completeCondition:() => {
+                        return creature.inventoryTotal() >= 5;
+                    },
+                    parent:creature,
+                    nextGoal:() => { return creature.goals.returnItems}
+                }
             },
             retrieveIron: {
                 target:Home,
@@ -327,16 +322,14 @@ class Bandit extends Creature {
                 parent:this,
             }
         }
-        this.goals.gatherBerries.nextGoal = () => { return this.goals.returnItems};
-        this.goals.gatherIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.retrieveIron.nextGoal = () => { return this.goals.smeltIron};
         this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.returnItems.nextGoal = () => {
             console.log(getGoal())
-            return this.goals.gatherBerries;
-            //return (home.inventory.iron_ore.amount <= 9 ? this.goals.gatherIron : this.goals.retrieveIron);
+            return this.goals.gather(this,BerryBush);
+            //return (home.inventory.iron_ore.amount <= 9 ? this.goals.gather(this,IronVein) : this.goals.retrieveIron);
         };
-        this.currGoal = this.goals.gatherBerries;
+        this.currGoal = this.goals.gather(this,BerryBush);
     }
 }
 
