@@ -285,14 +285,14 @@ class Bandit extends Creature {
             ]
         })
         this.goals = {
-            /*gatherBerries: {
+            gatherBerries: {
                 target:BerryBush,
                 func:this.gather,
                 completeCondition:() => {
                     return this.inventoryTotal() >= 5;
                 },
                 parent:this,
-            },*/
+            },
             gatherIron: {
                 target:IronVein,
                 func:this.gather,
@@ -327,14 +327,16 @@ class Bandit extends Creature {
                 parent:this,
             }
         }
-        //this.goals.gatherBerries.nextGoal = () => { return this.goals.returnItems};
+        this.goals.gatherBerries.nextGoal = () => { return this.goals.returnItems};
         this.goals.gatherIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.retrieveIron.nextGoal = () => { return this.goals.smeltIron};
         this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.returnItems.nextGoal = () => {
-            return (home.inventory.iron_ore.amount <= 9 ? this.goals.gatherIron : this.goals.retrieveIron);
+            console.log(getGoal())
+            return this.goals.gatherBerries;
+            //return (home.inventory.iron_ore.amount <= 9 ? this.goals.gatherIron : this.goals.retrieveIron);
         };
-        this.currGoal = this.goals.gatherIron;
+        this.currGoal = this.goals.gatherBerries;
     }
 }
 

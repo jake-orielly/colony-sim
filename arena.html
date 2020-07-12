@@ -15,6 +15,7 @@
     <script src="./creatures.js"></script>
     <script src="./resource_nodes.js"></script>
     <script src="./stations.js"></script>
+    <script src="./gui.js"></script>
     <script src="jquery-3.4.1.min.js"></script>
 </head>
     <body onload = "start()">
@@ -27,6 +28,15 @@
             <table class="clickable" id="arena-board">
             </table>
             <button id="play-button" onclick="togglePlay()">Play</button>
+        </div>
+        <div id="goal-container">
+            <p>Current Goal</p>
+            <input type="radio" id="berries-input" name="goal" value="berries">
+            <label for="berries">Berries</label><br>
+            <input type="radio" id="iron-input" name="goal" value="iron" checked>
+            <label for="iron">Iron</label><br>
+            <input type="radio" id="flax-input" name="goal" value="flax">
+            <label for="flax">Flax</label>
         </div>
         <div id="info-div">
         </div>

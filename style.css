@@ -24,6 +24,11 @@ button {
     float: left;
 }
 
+#goal-container {
+    display: inline-block;
+    margin-left: 2em;
+}
+
 #action-container {
     width: 30%;
     float: left;

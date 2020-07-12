@@ -36,8 +36,6 @@ class Item {
 }
 
 function craftItem(Item) {
-    console.log(new Item)
-    console.log(new Item().craft)
     new Item().craft();
 }
 
