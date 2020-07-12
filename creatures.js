@@ -325,8 +325,16 @@ class Bandit extends Creature {
         this.goals.retrieveIron.nextGoal = () => { return this.goals.smeltIron};
         this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.returnItems.nextGoal = () => {
-            console.log(getGoal())
-            return this.goals.gather(this,BerryBush);
+            let split1 = playerSetGoal.split("_")[1];
+            let resourceNodeMap = {
+                'berries': BerryBush,
+                'iron': IronVein,
+                'coal': CoalVein,
+                'flax': FlaxPlant,
+                'pine': PineTree,
+                'oak': OakTree,
+            }
+            return this.goals.gather(this,resourceNodeMap[split1]);
             //return (home.inventory.iron_ore.amount <= 9 ? this.goals.gather(this,IronVein) : this.goals.retrieveIron);
         };
         this.currGoal = this.goals.gather(this,BerryBush);
