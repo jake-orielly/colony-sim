@@ -62,3 +62,8 @@ button {
     margin: 0em 1em;
     text-decoration: underline;
 }
+
+.title {
+    text-decoration: underline;
+    font-weight: bold;
+}

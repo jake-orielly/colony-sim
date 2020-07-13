@@ -59,12 +59,7 @@ class Entity {
 class Creature extends Entity{ 
     constructor(attributes) {
         super(attributes)
-        this.strength = attributes.strength;
-        this.dexterity = attributes.dexterity;
-        this.constitution = attributes.constitution;
-        this.intelligence = attributes.intelligence;
-        this.wisdom = attributes.wisdom;
-        this.charisma = attributes.charisma;
+        this.attr = attributes.attr;
         this.hp = this.maxHP();
         this.y = attributes.y;
         this.x = attributes.x;
@@ -80,7 +75,7 @@ class Creature extends Entity{
     }
 
     maxHP() {
-        return this.constitution * 4;
+        return this.attr.constitution * 4;
     }
 
     takeDamage(damage) {
@@ -271,12 +266,14 @@ class Bandit extends Creature {
             y:y,
             x:x,
             token:token,
-            strength: 11,
-            dexterity: 12,
-            constitution: 12,
-            intellegence: 10,
-            wisdom: 10,
-            charisma: 10,
+            attr: {
+                strength: 11,
+                dexterity: 12,
+                constitution: 12,
+                intellegence: 10,
+                wisdom: 10,
+                charisma: 10,
+            },
             equipment: [
                 new Shortsword(),
                 new Shortbow(),
@@ -345,12 +342,14 @@ class Knight extends Creature {
     constructor(y,x,token) {
         super({
             name:'knight',
-            strength: 16,
-            dexterity: 11,
-            constitution: 14,
-            intellegence: 11,
-            wisdom: 11,
-            charisma: 15,
+            attr: {
+                strength: 16,
+                dexterity: 11,
+                constitution: 14,
+                intellegence: 11,
+                wisdom: 11,
+                charisma: 15,
+            },
             equipment: [
                 new Greatsword(),
                 new HeavyCrossbow(),
