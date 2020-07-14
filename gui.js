@@ -15,3 +15,28 @@ function setupResourceGatherGui() {
         )
     }
 }
+
+function showDetails(selected) {
+    $("#info-div").addClass("active");
+    $("#info-div").append("<p>" + prettyPrint(selected.name) + "</p>");
+    $("#info-div").append("<p class='clickable' onclick='detailExpand(\"inventory\")'></p>");
+    $("#info-div p:last").append("<span class='title'>Inventory</span><span>+</span>");
+    $("#info-div").append("<div class='detail-sub' id='inventory-detail'></div>");
+    for (let i in selected.inventory)
+        $("#inventory-detail").append("<p>" + prettyPrint(i) + ": " + selected.inventory[i].amount + "</p>");
+    if (!Object.keys(selected.inventory).length)
+        $("#inventory-detail").append("<p>Inventory is empty.</p>");
+    if (selected.attr != undefined){
+        $("#info-div").append("<p class='clickable' onclick='detailExpand(\"attr\")'></p>");
+        $("#info-div p:last").append("<span class='title'>Attributes</span><span>+</span>")
+        $("#info-div").append("<div class='detail-sub' id='attr-detail'></div>");
+        for (let i in selected.attr)
+            $("#attr-detail").append("<p>" + prettyPrint(i) + ": " + selected.attr[i] + "</p>");
+    }
+    $(".detail-sub").hide()
+}
+
+function detailExpand(val) {
+    $(".detail-sub").hide()
+    $("#" + val + "-detail").show();
+}

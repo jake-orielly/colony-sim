@@ -23,19 +23,7 @@ function start() {
         let selected = arenaBoard[y][x];
         $("#info-div").empty();
         if (selected.name) {
-            $("#info-div").addClass("active");
-            $("#info-div").append("<p>" + prettyPrint(selected.name) + "</p>");
-            if (Object.keys(selected.inventory).length) {
-                $("#info-div").append("<p class='title'>Inventory</p>");
-                for (let i in selected.inventory)
-                    $("#info-div").append("<p>" + prettyPrint(i) + ": " + selected.inventory[i].amount + "</p>");
-            }
-
-            if (selected.attr != undefined){
-                $("#info-div").append("<p class='title'>Attributes</p>");
-                for (let i in selected.attr)
-                    $("#info-div").append("<p>" + prettyPrint(i) + ": " + selected.attr[i] + "</p>");
-            }
+            showDetails(selected);
         }
         else
             $("#info-div").removeClass("active");
