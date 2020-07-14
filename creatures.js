@@ -109,6 +109,7 @@ class Creature extends Entity{
 
         if (this.goalY == undefined) {
             placeToken(this);
+            this.completeCurrGoal();
             return;
         }
 
@@ -290,6 +291,7 @@ class Bandit extends Creature {
                         return creature.inventoryTotal() >= 5;
                     },
                     parent:creature,
+                    name:"gather_" + (new resource()).name,
                     nextGoal:() => { return creature.goals.returnItems}
                 }
             },

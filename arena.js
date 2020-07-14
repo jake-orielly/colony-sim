@@ -69,7 +69,6 @@ function start() {
     entities.push(new PineTree(2,10));
     entities.push(new PineTree(7,3));
     entities.push(new IronVein(3,7));
-    entities.push(new IronVein(8,1));
     entities.push(new CoalVein(9,0));
     entities.push(new CoalVein(10,2));
     entities.push(new FlaxPlant(12,9));
