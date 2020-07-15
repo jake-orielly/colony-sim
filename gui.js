@@ -7,6 +7,7 @@ function setGoal(val) {
 
 function setupResourceGatherGui() {
     let resources = ['berries','iron_ore','coal_ore','flax','pine_logs','oak_logs'];
+    $("#goal-container").append("<p>Gather:</p>");
     for (let i of resources) {
         $("#goal-container").append(
             `<input type="radio" id="${i}-input" name="goal" value="${i}" onclick="setGoal('gather_${i}')" ` + 
@@ -14,6 +15,25 @@ function setupResourceGatherGui() {
             <label for="${i}">${prettyPrint(i)}</label><br>`
         )
     }
+}
+
+function setupCraftGui() {
+    let resources = ['iron_ingot'];
+    $("#goal-container").append("<p>Craft:</p>");
+    for (let i of resources) {
+        $("#goal-container").append(
+            `<input type="radio" id="${i}-input" name="goal" value="${i}" onclick="setGoal('craft_${i}')">
+            <label for="${i}">${prettyPrint(i)}</label><br>`
+        )
+    }
+}
+
+function setupGui() {
+    setupResourceGatherGui();
+    setupCraftGui();
+    $("#goal-container").append(
+        `<input type="radio" id="idle-input" name="goal" value="idle" onclick="setGoal('idle')"><label for="idle">Idle</label><br>`
+    )
 }
 
 function showDetails(selected) {

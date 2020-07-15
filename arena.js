@@ -6,7 +6,7 @@ let blankToken = ".";
 let home = new Home(2,2);
 
 function start() {
-    setupResourceGatherGui();
+    setupGui();
     
     for (let y = 0; y < cols; y++) {
         arenaBoard[y] = [];

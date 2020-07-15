@@ -281,7 +281,31 @@ class Bandit extends Creature {
                 new LeatherJerkin(),
                 new Boots()
             ]
-        })
+        }),
+        this.getGoalFromGui = function () {
+            let split0 = playerSetGoal.split("_")[0];
+            let split1 = playerSetGoal.split("_")[1];
+            if (split0 == "gather") {
+                let resourceNodeMap = {
+                    'berries': BerryBush,
+                    'iron': IronVein,
+                    'coal': CoalVein,
+                    'flax': FlaxPlant,
+                    'pine': PineTree,
+                    'oak': OakTree,
+                }
+                return this.parent.goals.gather(this.parent,resourceNodeMap[split1]);
+            }
+            else if (split0 == "craft") {
+                let resourceNodeMap = {
+                    'iron_ingot': IronIngot,
+                }
+                return this.parent.goals.craft(this.parent,resourceNodeMap[split1]);
+            }
+            else if (split0 == "idle") {
+                return this.parent.goals.idle;
+            }
+        },
         this.goals = {
             gather: function(creature,resource) {
                 return {
@@ -293,6 +317,19 @@ class Bandit extends Creature {
                     parent:creature,
                     name:"gather_" + (new resource()).name,
                     nextGoal:() => { return creature.goals.returnItems}
+                }
+            },
+            // unfinished
+            craft: function(creature,resource) {
+                return {
+                    target:resource,
+                    func:creature.craftItem,
+                    completeCondition:() => {
+                        return creature.inventoryTotal() >= 5;
+                    },
+                    parent:creature,
+                    name:"craft_" + (new resource()).name,
+                    nextGoal:() => { return creature.goals.idle}
                 }
             },
             retrieveIron: {
@@ -319,23 +356,21 @@ class Bandit extends Creature {
                     return this.inventoryTotal() <= 0;
                 },
                 parent:this,
+            },
+            idle: {
+                target:Home,
+                func: () => {return},
+                funcArgs:"",
+                completeCondition:() => {
+                    return true
+                },
+                parent:this
             }
         }
         this.goals.retrieveIron.nextGoal = () => { return this.goals.smeltIron};
         this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
-        this.goals.returnItems.nextGoal = () => {
-            let split1 = playerSetGoal.split("_")[1];
-            let resourceNodeMap = {
-                'berries': BerryBush,
-                'iron': IronVein,
-                'coal': CoalVein,
-                'flax': FlaxPlant,
-                'pine': PineTree,
-                'oak': OakTree,
-            }
-            return this.goals.gather(this,resourceNodeMap[split1]);
-            //return (home.inventory.iron_ore.amount <= 9 ? this.goals.gather(this,IronVein) : this.goals.retrieveIron);
-        };
+        this.goals.idle.nextGoal = this.getGoalFromGui;
+        this.goals.returnItems.nextGoal = this.getGoalFromGui;
         this.currGoal = this.goals.gather(this,BerryBush);
     }
 }
