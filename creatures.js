@@ -63,7 +63,7 @@ class Creature extends Entity{
         this.hp = this.maxHP();
         this.y = attributes.y;
         this.x = attributes.x;
-        this.target = BerryBush;
+        this.target = undefined;
         this.token = attributes.token;
         this.goals = {};
         this.goalY = undefined;
@@ -246,7 +246,7 @@ class Creature extends Entity{
         
         for (let i = 0; i < cols; i++) 
             for (let j = 0; j < rows; j++)
-                if (arenaBoard[i][j] instanceof target &&
+                if (target && arenaBoard[i][j] instanceof target &&
                     (best == -1 || pathSpace[i][j] < best)) {
                         best = pathSpace[i][j];
                         result.y = i;
@@ -260,7 +260,16 @@ class Creature extends Entity{
     }
 }
 
-class Bandit extends Creature {
+class Character extends Creature {
+    constructor(attributes) {
+        super(attributes)
+        this.skills = {
+            'foraging': new Skill({name:'foraging'})
+        }
+    }
+}
+
+class Bandit extends Character {
     constructor(y,x,token) {
         super({
             name:'bandit',
@@ -282,30 +291,6 @@ class Bandit extends Creature {
                 new Boots()
             ]
         }),
-        this.getGoalFromGui = function () {
-            let split0 = playerSetGoal.split("_")[0];
-            let split1 = playerSetGoal.split("_")[1];
-            if (split0 == "gather") {
-                let resourceNodeMap = {
-                    'berries': BerryBush,
-                    'iron': IronVein,
-                    'coal': CoalVein,
-                    'flax': FlaxPlant,
-                    'pine': PineTree,
-                    'oak': OakTree,
-                }
-                return this.parent.goals.gather(this.parent,resourceNodeMap[split1]);
-            }
-            else if (split0 == "craft") {
-                let resourceNodeMap = {
-                    'iron_ingot': IronIngot,
-                }
-                return this.parent.goals.craft(this.parent,resourceNodeMap[split1]);
-            }
-            else if (split0 == "idle") {
-                return this.parent.goals.idle;
-            }
-        },
         this.goals = {
             gather: function(creature,resource) {
                 return {
@@ -329,6 +314,20 @@ class Bandit extends Creature {
                     },
                     parent:creature,
                     name:"craft_" + (new resource()).name,
+                    nextGoal:() => { return creature.goals.idle}
+                }
+            },
+            moveTo: function(creature,x,y) {
+                return {
+                    target:Home,
+                    func:() => {
+                        console.log(x,y)
+                    },
+                    completeCondition:() => {
+                        return creature.x == x && creature.y == y;
+                    },
+                    parent:creature,
+                    name:"moveto_" + x + "_" + y,
                     nextGoal:() => { return creature.goals.idle}
                 }
             },
@@ -369,9 +368,9 @@ class Bandit extends Creature {
         }
         this.goals.retrieveIron.nextGoal = () => { return this.goals.smeltIron};
         this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
-        this.goals.idle.nextGoal = this.getGoalFromGui;
-        this.goals.returnItems.nextGoal = this.getGoalFromGui;
-        this.currGoal = this.goals.gather(this,BerryBush);
+        this.goals.idle.nextGoal = () => { return this.goals.idle};
+        this.goals.returnItems.nextGoal = () => { return this.goals.idle};
+        this.currGoal = this.goals.idle;
     }
 }
 

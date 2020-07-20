@@ -4,10 +4,9 @@ let entities = [];
 let arenaBoard = [];
 let blankToken = ".";
 let home = new Home(2,2);
+let selected;
 
 function start() {
-    setupGui();
-    
     for (let y = 0; y < cols; y++) {
         arenaBoard[y] = [];
         $("#arena-board").append("<tr></tr>")
@@ -20,7 +19,7 @@ function start() {
     $("td").click(function() {
         let y = $(this).attr("id").split("-")[1];
         let x = $(this).attr("id").split("-")[2];
-        let selected = arenaBoard[y][x];
+        selected = arenaBoard[y][x];
         $("#info-div").empty();
         if (selected.name) {
             showDetails(selected);
@@ -30,6 +29,17 @@ function start() {
         $("td.selected").removeClass("selected");
         $(this).addClass("selected");
     })
+
+    document.addEventListener('contextmenu', event => event.preventDefault()); 
+    $("td").contextmenu(function() {
+        let y = $(this).attr("id").split("-")[1];
+        let x = $(this).attr("id").split("-")[2];
+        if (selected) {
+            console.log(selected,selected.goalX)
+            selected.goalX = x;
+            selected.goalY = y;
+        }
+    });
 
     newWall(8,10,'#')
     newWall(8,9,'#')

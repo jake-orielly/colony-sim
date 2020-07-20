@@ -1,19 +1,21 @@
 class Skill {
     constructor(attributes) {
         this.name = attributes.name;
-        this.xp = 0;
+        this.currXP = 0;
+        this.totalXP = 0;
         this.level = 1;
     }
 
     gainXP(amount) {
-        this.xp += amount;
-        if (this.xp >= this.xpToLevel(this.level))
+        this.currXP += amount;
+        this.totalXP += amount;
+        if (this.currXP >= this.xpToLevel(this.level))
             this.levelUp();
         this.renderSkill();
     }
 
     renderSkill() {
-        $('#' + this.name + '-skill .skill-inner').width(this.xp / this.xpToLevel(this.level) * 100 + '%');
+        $('#' + this.name + '-skill .skill-inner').width(this.currXP / this.xpToLevel(this.level) * 100 + '%');
         $('#' + this.name + '-skill .level-text').html(this.level);
     }
 
@@ -26,7 +28,7 @@ class Skill {
     }
 
     levelUp() {
-        this.xp -= this.xpToLevel(this.level);
+        this.currXP -= this.xpToLevel(this.level);
         this.level++;
     }
 }
