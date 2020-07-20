@@ -120,7 +120,11 @@ class Creature extends Entity{
         }
 
         let nextMove;
-        if ((Array.isArray(this.currGoal.target) && this.distanceTo(this.goalY,this.goalX) > 0) || 
+        if (
+            // moveTo case
+            (Array.isArray(this.currGoal.target) && this.distanceTo(this.goalY,this.goalX) > this.currGoal.tolerance) || 
+
+            // all other cases
             (!Array.isArray(this.currGoal.target) && this.distanceTo(this.goalY,this.goalX) > 1)) {
             nextMove = this.getNextMove(this.goalY,this.goalX);
             placeToken(new BlankSpace(this.y,this.x));
@@ -312,8 +316,10 @@ class Bandit extends Character {
                 return {
                     target:[y,x],
                     func:() => {return},
+                    // creature moves to nearest tile within tolerance of goal
+                    tolerance: 0,
                     completeCondition:() => {
-                        return creature.distanceTo(creature.goalY,creature.goalX) == 0;
+                        return creature.distanceTo(creature.goalY,creature.goalX) == this.tolerance;
                     },
                     parent:creature,
                     name:"moveto_" + y + "_" + x,
@@ -384,7 +390,7 @@ class Bandit extends Character {
         this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.idle.nextGoal = () => { return this.goals.idle};
         this.goals.returnItems.nextGoal = () => { return this.goals.idle};
-        this.currGoal = this.goals.moveTo(this,3,6);
+        this.currGoal = this.goals.idle;
     }
 }
 
