@@ -100,13 +100,19 @@ class Creature extends Entity{
         return total;
     }
 
-    move() {
+    act() {
         if (this.goalY == undefined || !this.reaffirmGoal()) {
-            let newGoalLoc = this.locate(this.currGoal.target);
-            this.goalY = newGoalLoc.y;
-            this.goalX = newGoalLoc.x;
+            if (Array.isArray(this.currGoal.target)) {
+                this.goalY = this.currGoal.target[0];
+                this.goalX = this.currGoal.target[1];
+            }
+            else {
+                let newGoalLoc = this.locate(this.currGoal.target);
+                this.goalY = newGoalLoc.y;
+                this.goalX = newGoalLoc.x;
+            }
         }
-
+        
         if (this.goalY == undefined) {
             placeToken(this);
             this.completeCurrGoal();
@@ -114,7 +120,8 @@ class Creature extends Entity{
         }
 
         let nextMove;
-        if (this.distanceTo(this.goalY,this.goalX) > 1) {
+        if ((Array.isArray(this.currGoal.target) && this.distanceTo(this.goalY,this.goalX) > 0) || 
+            (!Array.isArray(this.currGoal.target) && this.distanceTo(this.goalY,this.goalX) > 1)) {
             nextMove = this.getNextMove(this.goalY,this.goalX);
             placeToken(new BlankSpace(this.y,this.x));
             this.y = nextMove[0];
@@ -131,8 +138,16 @@ class Creature extends Entity{
 
     // Confirm our goal is still where we think it is
     reaffirmGoal() {
+        if (Array.isArray(this.currGoal.target))
+            return true
         if (!arenaBoard[this.goalY][this.goalX] instanceof this.currGoal.target)
             return false;
+    }
+
+    setGoal(goal) {
+        this.goalY = undefined;
+        this.goalX = undefined;
+        this.currGoal = goal;
     }
 
     gather(y,x) {
@@ -171,7 +186,6 @@ class Creature extends Entity{
         }
         pathSpace[y][x] = 0;
         toExpand.push([y,x]);
-
         while (toExpand.length) {
             curr = toExpand.pop();
             for (let i of cardinalDirs) {
@@ -194,7 +208,7 @@ class Creature extends Entity{
         let newY, newX;
   
         let pathSpace = this.getPathTo(y, x);
-
+    
         //If we can't find a path to the target, don't move
         if (pathSpace[this.y][this.x] == undefined)
             return [this.y,this.x];
@@ -211,7 +225,7 @@ class Creature extends Entity{
             ))
                 nextMove = [newY,newX];
         }
-
+        console.log(nextMove)
         return nextMove;
     }
 
@@ -294,6 +308,18 @@ class Bandit extends Character {
             ]
         }),
         this.goals = {
+            moveTo: function(creature,y,x) {
+                return {
+                    target:[y,x],
+                    func:() => {return},
+                    completeCondition:() => {
+                        return creature.distanceTo(creature.goalY,creature.goalX) == 0;
+                    },
+                    parent:creature,
+                    name:"moveto_" + y + "_" + x,
+                    nextGoal: () => { return creature.goals.idle}
+                }
+            },
             gather: function(creature,resource) {
                 return {
                     target:resource,
@@ -316,20 +342,6 @@ class Bandit extends Character {
                     },
                     parent:creature,
                     name:"craft_" + (new resource()).name,
-                    nextGoal:() => { return creature.goals.idle}
-                }
-            },
-            moveTo: function(creature,x,y) {
-                return {
-                    target:Home,
-                    func:() => {
-                        console.log(x,y)
-                    },
-                    completeCondition:() => {
-                        return creature.x == x && creature.y == y;
-                    },
-                    parent:creature,
-                    name:"moveto_" + x + "_" + y,
                     nextGoal:() => { return creature.goals.idle}
                 }
             },
@@ -359,7 +371,7 @@ class Bandit extends Character {
                 parent:this,
             },
             idle: {
-                target:Home,
+                target:undefined,
                 func: () => {return},
                 funcArgs:"",
                 completeCondition:() => {
@@ -372,7 +384,7 @@ class Bandit extends Character {
         this.goals.smeltIron.nextGoal = () => { return this.goals.returnItems};
         this.goals.idle.nextGoal = () => { return this.goals.idle};
         this.goals.returnItems.nextGoal = () => { return this.goals.idle};
-        this.currGoal = this.goals.idle;
+        this.currGoal = this.goals.moveTo(this,3,6);
     }
 }
 

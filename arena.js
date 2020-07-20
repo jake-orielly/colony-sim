@@ -19,27 +19,26 @@ function start() {
     $("td").click(function() {
         let y = $(this).attr("id").split("-")[1];
         let x = $(this).attr("id").split("-")[2];
-        selected = arenaBoard[y][x];
-        $("#info-div").empty();
-        if (selected.name) {
-            showDetails(selected);
+
+        if (selected && selected instanceof Creature) {
+            selected.setGoal(selected.goals.moveTo(selected,parseInt(y),parseInt(x)));
+            selected = undefined;
+            $("td.selected").removeClass("selected");
         }
-        else
-            $("#info-div").removeClass("active");
-        $("td.selected").removeClass("selected");
-        $(this).addClass("selected");
+
+        else {
+            selected = arenaBoard[y][x];
+            $("#info-div").empty();
+            if (selected.name) {
+                showDetails(selected);
+            }
+            else
+                $("#info-div").removeClass("active");
+            $("td.selected").removeClass("selected");
+            $(this).addClass("selected");
+        }
     })
 
-    document.addEventListener('contextmenu', event => event.preventDefault()); 
-    $("td").contextmenu(function() {
-        let y = $(this).attr("id").split("-")[1];
-        let x = $(this).attr("id").split("-")[2];
-        if (selected) {
-            console.log(selected,selected.goalX)
-            selected.goalX = x;
-            selected.goalY = y;
-        }
-    });
 
     newWall(8,10,'#')
     newWall(8,9,'#')
@@ -90,7 +89,7 @@ function start() {
 function gameTick() {
     for (let i of entities) {
         if (i instanceof Creature)
-            i.move();
+            i.act();
         else
             i.render();
     }
