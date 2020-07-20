@@ -15,6 +15,7 @@ class Entity {
         this.x = attributes.x;
         this.token = attributes.token;
         this.inventory = {};
+        this.maxInventory = 20;
     }
 
     addItem(item,amount = 1) {
@@ -101,7 +102,7 @@ class Creature extends Entity{
     }
 
     act() {
-        if (this.goalY == undefined || !this.reaffirmGoal()) {
+        if (this.goalY == undefined) {
             if (Array.isArray(this.currGoal.target)) {
                 this.goalY = this.currGoal.target[0];
                 this.goalX = this.currGoal.target[1];
@@ -112,7 +113,10 @@ class Creature extends Entity{
                 this.goalX = newGoalLoc.x;
             }
         }
-        
+
+        if (this.goalY && !this.reaffirmGoal()) 
+            this.completeCurrGoal();
+
         if (this.goalY == undefined) {
             placeToken(this);
             this.completeCurrGoal();
@@ -121,9 +125,8 @@ class Creature extends Entity{
 
         let nextMove;
         if (
-            // moveTo case
+            // moveTo and gather cases
             (Array.isArray(this.currGoal.target) && this.distanceTo(this.goalY,this.goalX) > this.currGoal.tolerance) || 
-
             // all other cases
             (!Array.isArray(this.currGoal.target) && this.distanceTo(this.goalY,this.goalX) > 1)) {
             nextMove = this.getNextMove(this.goalY,this.goalX);
@@ -143,7 +146,12 @@ class Creature extends Entity{
     // Confirm our goal is still where we think it is
     reaffirmGoal() {
         if (Array.isArray(this.currGoal.target))
-            return true
+            if (this.currGoal.name.split("_")[0] == "gather" && !(arenaBoard[this.goalY][this.goalX] instanceof ResourceNode)) {
+                console.log(1)
+                return false;
+            }
+            else
+                return true;
         if (!arenaBoard[this.goalY][this.goalX] instanceof this.currGoal.target)
             return false;
     }
@@ -155,7 +163,8 @@ class Creature extends Entity{
     }
 
     gather(y,x) {
-        this.parent.takeItem(Object.keys(arenaBoard[y][x].inventory)[0],1,arenaBoard[y][x]);
+        if (arenaBoard[y][x] instanceof ResourceNode)
+            this.parent.takeItem(Object.keys(arenaBoard[y][x].inventory)[0],1,arenaBoard[y][x]);
     }
 
     getItem(x,y,item) {
@@ -326,16 +335,17 @@ class Bandit extends Character {
                     nextGoal: () => { return creature.goals.idle}
                 }
             },
-            gather: function(creature,resource) {
+            gather: function(creature,y,x) {
                 return {
-                    target:resource,
+                    target:[y,x],
                     func:creature.gather,
+                    tolerance: 1,
                     completeCondition:() => {
-                        return creature.inventoryTotal() >= 5;
+                        return creature.inventoryTotal() >= creature.maxInventory;
                     },
                     parent:creature,
-                    name:"gather_" + (new resource()).name,
-                    nextGoal:() => { return creature.goals.returnItems}
+                    name:"gather_" + arenaBoard[y][x].name,
+                    nextGoal:() => { return creature.goals.idle}
                 }
             },
             // unfinished
@@ -383,6 +393,7 @@ class Bandit extends Character {
                 completeCondition:() => {
                     return true
                 },
+                name:"idle",
                 parent:this
             }
         }

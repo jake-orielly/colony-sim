@@ -21,10 +21,13 @@ function start() {
         let x = $(this).attr("id").split("-")[2];
 
         if (selected && selected instanceof Creature) {
-            if (arenaBoard[y][x] instanceof ResourceNode || arenaBoard[y][x] instanceof BlankSpace) {
+            if (arenaBoard[y][x] instanceof BlankSpace) {
                 selected.setGoal(selected.goals.moveTo(selected,parseInt(y),parseInt(x)));
-                if (arenaBoard[y][x] instanceof ResourceNode)
-                    selected.currGoal.tolerance = 1;
+                selected = undefined;
+                $("td.selected").removeClass("selected");
+            }
+            else if (arenaBoard[y][x] instanceof ResourceNode) {
+                selected.setGoal(selected.goals.gather(selected,parseInt(y),parseInt(x)));
                 selected = undefined;
                 $("td.selected").removeClass("selected");
             }
