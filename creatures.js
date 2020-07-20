@@ -264,7 +264,9 @@ class Character extends Creature {
     constructor(attributes) {
         super(attributes)
         this.skills = {
-            'foraging': new Skill({name:'foraging'})
+            'woodcutting': new Skill({name:'woodcutting'}),
+            'mining': new Skill({name:'mining'}),
+            'smithing': new Skill({name:'smithing'})
         }
     }
 }

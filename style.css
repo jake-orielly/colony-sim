@@ -71,3 +71,16 @@ button {
 .clickable {
     cursor: pointer;
 }
+
+.skill-outer, .skill-inner {
+    height: 1rem;
+}
+
+.skill-outer {
+    width: 7rem;
+    background-color: red;
+}
+
+.skill-inner {
+    background-color: green;
+}

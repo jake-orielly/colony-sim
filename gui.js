@@ -23,7 +23,19 @@ function showDetails(selected) {
         for (let i in selected.equipment)
             $("#equipment-detail").append("<p>" + prettyPrint(selected.equipment[i].name) + "</p>");
     }
-    for (let i of ["inventory","attr","equipment"])
+    if (selected.skills != undefined){
+        $("#info-div").append("<p class='clickable' onclick='toggleDisplay(\"skills\")'></p>");
+        $("#info-div p:last").append("<span class='title'>Skills</span><span id='skills-sign'>+</span>")
+        $("#info-div").append("<div class='detail-sub' id='skills-detail'></div>");
+
+        for (let i in selected.skills) {
+            $("#skills-detail").append("<p>" + prettyPrint(selected.skills[i].name) + "</p>");
+            $("#skills-detail p:last").append("<div class='skill-outer'><div class='skill-inner' style='width:" +
+                selected.skills[i].currXP/selected.skills[i].xpToLevel(selected.skills[i].level) * 100 + 
+                "%'></div></div>")
+        }
+    }
+    for (let i of ["inventory","attr","equipment","skills"])
         detailContract(i)
 }
 
@@ -46,5 +58,4 @@ function detailContract(val) {
     $("#" + val + "-detail").hide();
     $("#" + val + "-sign").html('+');
     detailCategories[val] = false;
-    
 }
